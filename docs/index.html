@@ -131,18 +131,18 @@
             <tbody>
               <tr>
                 <td>Thời gian từ lúc bắt đầu đến khi chạy được <code>node -v</code></td>
-                <td><span class="value">03 phút</span> <span class="source-tag estimate">GIẢ ĐỊNH</span><br><span class="subtle">Mốc minh họa cho trường hợp chuẩn bị Node.js trên máy cá nhân. Chưa có phép đo thời gian cài đặt thực tế.</span></td>
-                <td><span class="value">01 phút 15 giây</span> <span class="source-tag estimate">ƯỚC TÍNH</span><br><span class="subtle">Mốc tham khảo cho thao tác Create Codespace → <code>node -v</code>, chưa được xác nhận bằng đồng hồ bấm giờ. Không dùng để kết luận đạt ngưỡng dưới 2 phút.</span></td>
+                <td><span class="value">Không ghi nhận thời gian</span><br><span class="subtle">Máy cá nhân được kiểm tra bằng PowerShell; chưa thực hiện phép đo thời gian chuẩn bị Node.js.</span></td>
+                <td><span class="value">Node.js 22 đã hoạt động</span><br><span class="subtle">Lệnh <code>node -v</code> trả về <strong>v22.23.4</strong> sau khi khởi tạo Codespace. Không có mốc bấm giờ từ lúc tạo máy đến khi terminal sẵn sàng.</span><span class="source-tag">ĐÃ KIỂM TRA</span></td>
               </tr>
               <tr>
                 <td>Số CPU, RAM</td>
                 <td><span class="value">12 CPU logic · 15.8 GB RAM</span><br><span class="subtle">Đo bằng PowerShell trên Windows.</span><span class="source-tag">ĐÃ ĐO</span></td>
-                <td><span class="value">2 CPU logic · 7.8 GB RAM</span><br><span class="subtle">Thông số JSON API từ lần chạy trước; cần cập nhật nếu Codespace sau Rebuild trả kết quả khác.</span><span class="source-tag">ẢNH API CŨ</span></td>
+                <td><span class="value">2 CPU logic · 7.8 GB RAM</span><br><span class="subtle">Thông số từ API Codespace mới, xác nhận ngày 05/11/2026.</span><span class="source-tag">ẢNH API 05/11</span></td>
               </tr>
               <tr>
                 <td>Hệ điều hành</td>
                 <td><strong>Windows 11 Pro</strong><br>Version 10.0.26300 <span class="source-tag">POWERSHELL</span></td>
-                <td><strong>Linux</strong><br>Kernel 6.8.0-1064-azure <span class="source-tag">ẢNH API CŨ</span></td>
+                <td><strong>Linux</strong><br>Kernel 6.8.0-1064-azure <span class="source-tag">ẢNH API 05/11</span></td>
               </tr>
               <tr>
                 <td>Truy cập từ thiết bị khác</td>
@@ -151,20 +151,33 @@
               </tr>
               <tr>
                 <td>Chi phí và cách đo</td>
-                <td>Thiết bị, điện năng và bảo trì; không có sẵn cơ chế tính phí theo core-hour.</td>
-                <td>Codespaces theo dõi compute (core-hours) và storage. <strong>Billing toàn tài khoản:</strong> Gross <strong>$0.20</strong>, Discount <strong>$0.20</strong>, Billed <strong>$0.00</strong> (ảnh ngày 05/11/2026). Cần lọc Product = Codespaces để xác định riêng mức dùng Codespaces.</td>
+                <td>Chi phí thiết bị, điện năng và bảo trì; không có sẵn cơ chế tính theo core-hour.</td>
+                <td>GitHub đo tài nguyên theo thời gian compute và dung lượng lưu trữ. <strong>Repository notes-api-2324802010360:</strong> tổng Gross <strong>$0.39</strong>, Billed <strong>$0.00</strong>. Codespaces compute 2-core: <strong>0.55 giờ</strong>, Gross <strong>$0.10</strong>; lưu trữ hiển thị 0 GB-month, Gross dưới $0.01. Ngoài ra, GitHub Actions Linux sử dụng 6 phút, Gross $0.04.</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <h3>Ảnh chụp mức sử dụng GitHub Billing</h3>
-        <p class="subtle">Kỳ 01–30/11/2026 · số liệu đến ngày 05/11/2026 · phạm vi: <strong>Metered usage toàn tài khoản</strong> (chưa lọc Codespaces)</p>
-        <div class="billing-summary" aria-label="Tổng hợp Billing toàn tài khoản">
-          <div class="billing-item"><span>Gross usage</span><strong>$0.20</strong><span>Giá trị sử dụng trước khấu trừ</span></div>
-          <div class="billing-item"><span>Discount</span><strong>$0.20</strong><span>Được khấu trừ theo hạn mức</span></div>
-          <div class="billing-item"><span>Billed</span><strong>$0.00</strong><span>Số tiền thanh toán tại thời điểm chụp</span></div>
+        <h3>GitHub Billing – mức sử dụng theo repository</h3>
+        <p class="subtle">Kỳ tháng 11/2026 · repository: <strong>notes-api-2324802010360</strong> · dữ liệu theo ảnh Usage breakdown do sinh viên ghi nhận.</p>
+        <div class="billing-summary" aria-label="Tổng hợp mức sử dụng theo repository">
+          <div class="billing-item"><span>Gross amount của repository</span><strong>$0.39</strong><span>Tổng mức sử dụng trước các khoản được khấu trừ</span></div>
+          <div class="billing-item"><span>Codespaces compute 2-core</span><strong>0.55 giờ</strong><span>Gross $0.10 · đơn giá $0.18/giờ</span></div>
+          <div class="billing-item"><span>Billed amount của repository</span><strong>$0.00</strong><span>Số tiền phải thanh toán theo ảnh Billing</span></div>
         </div>
-        <p class="note"><strong>Phân biệt dữ liệu:</strong> Các số CPU/RAM máy cá nhân là kết quả PowerShell; thông số Codespaces lấy từ ảnh API lần trước. <strong>03 phút và 01 phút 15 giây là giá trị minh họa/ước tính, không phải thời gian đã đo</strong>. Số $0.20 phản ánh <strong>tổng Metered usage của tài khoản</strong>, không được khẳng định là mức dùng riêng của Codespaces hay repository. Khi có kết quả đo mới, cần cập nhật bảng trước khi nộp.</p>
+        <h3>Chi tiết các tài nguyên hiển thị trong ảnh</h3>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Dịch vụ / SKU</th><th>Mức dùng</th><th>Gross</th><th>Billed</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Actions Linux</td><td>6 phút</td><td>$0.04</td><td>$0.00</td></tr>
+              <tr><td>Codespaces compute 2-core</td><td>0.55 giờ</td><td>$0.10</td><td>$0.00</td></tr>
+              <tr><td>Codespaces storage</td><td>0 GB-month (làm tròn)</td><td>&lt;$0.01</td><td>$0.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note"><strong>Đối chiếu nguồn:</strong> Tổng Gross $0.39 là số của <strong>toàn repository</strong>, không phải chỉ riêng Codespaces. Ảnh được chụp chưa hiển thị hết các SKU, nên các dòng ở bảng chi tiết không cộng đủ thành $0.39. Dữ liệu CPU/RAM và hệ điều hành Codespaces lấy từ JSON API ngày 05/11/2026. Thời gian khởi tạo máy chưa có bản ghi đo bằng đồng hồ.</p>
       </section>
 
       <section class="card" id="nist">
@@ -174,7 +187,7 @@
           <article class="nist-item"><div class="nist-num">02 / NIST</div><h3>Broad Network Access</h3><p>Truy cập API qua HTTPS từ trình duyệt máy tính và điện thoại khi cổng 3000 được đặt Public.</p></article>
           <article class="nist-item"><div class="nist-num">03 / NIST</div><h3>Resource Pooling</h3><p>Sử dụng tài nguyên từ hạ tầng được GitHub quản lý và phân phối cho nhiều người dùng, không cần quản lý máy chủ vật lý.</p></article>
           <article class="nist-item"><div class="nist-num">04 / NIST</div><h3>Rapid Elasticity</h3><p>Có thể tạo, dừng, khởi động lại Codespace và thay đổi cấu hình máy khi dịch vụ cho phép. Bài thực hành chưa đo tự động co giãn theo tải.</p></article>
-          <article class="nist-item"><div class="nist-num">05 / NIST</div><h3>Measured Service</h3><p>GitHub theo dõi compute và lưu trữ theo mức sử dụng. Ảnh Billing ngày 05/11/2026 ghi tổng Metered usage toàn tài khoản $0.20, được khấu trừ $0.20 và Billed $0.00; đây chưa phải số riêng của Codespaces.</p></article>
+          <article class="nist-item"><div class="nist-num">05 / NIST</div><h3>Measured Service</h3><p>GitHub đo tài nguyên theo mức sử dụng. Ảnh Usage breakdown của repository <strong>notes-api-2324802010360</strong> ghi Gross <strong>$0.39</strong>, Billed <strong>$0.00</strong>, trong đó Codespaces compute 2-core sử dụng <strong>0.55 giờ</strong> với Gross <strong>$0.10</strong>.</p></article>
         </div>
       </section>
 
