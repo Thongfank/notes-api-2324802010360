@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Báo cáo Bài 1 Hello Cloud API - Thực hành Điện toán đám mây">
+  <title>Bài 1 | Hello Cloud API - Trần Nguyễn Quốc Thông</title>
+  <style>
+    :root {
+      --blue: #1d4ed8;
+      --navy: #14253f;
+      --ink: #17243b;
+      --muted: #64748b;
+      --line: #dfe6f0;
+      --bg: #f2f5fa;
+      --soft: #eef4ff;
+      --green: #15803d;
+      --red: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif; line-height: 1.65; }
+    a { color: var(--blue); }
+    a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+    .wrap { max-width: 1080px; margin: auto; padding: 0 20px; }
+    .topbar { background: #fff; border-bottom: 1px solid var(--line); }
+    .topbar .wrap { min-height: 66px; display: flex; gap: 18px; justify-content: space-between; align-items: center; }
+    .brand { font-weight: 800; color: var(--navy); text-decoration: none; }
+    .topnav { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; }
+    .topnav a { color: #475569; text-decoration: none; }
+    .topnav a:hover { color: var(--blue); }
+    .hero { padding: 45px 0 34px; }
+    .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; color: var(--blue); }
+    h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.18; margin: 12px 0; color: var(--navy); }
+    h2 { font-size: 23px; margin: 0 0 15px; color: var(--navy); }
+    h3 { font-size: 17px; margin: 0 0 6px; color: var(--navy); }
+    p { margin: 0 0 12px; }
+    .lead { max-width: 760px; font-size: 17px; color: #475569; }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    .pill { background: #e5edff; color: #244b94; padding: 7px 12px; border: 1px solid #cbdafa; border-radius: 999px; font-size: 13px; font-weight: 650; }
+    main { padding-bottom: 32px; }
+    .card { background: white; border: 1px solid var(--line); border-radius: 16px; padding: 26px; margin-bottom: 20px; box-shadow: 0 5px 24px rgba(21,37,63,.035); }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 0; }
+    .stat { background: #f7faff; border: 1px solid #e0eafb; border-radius: 12px; padding: 17px; }
+    .stat strong { font-size: 25px; display: block; color: #163d82; line-height: 1.3; }
+    .stat span { display: block; font-size: 13px; color: #52627b; }
+    .subtle { color: var(--muted); font-size: 14px; }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; min-width: 670px; }
+    th, td { border: 1px solid #d7e0ed; padding: 14px; vertical-align: top; text-align: left; }
+    th { background: #eaf1ff; color: #173f82; font-size: 14px; }
+    tbody tr:nth-child(even) { background: #f9fbfe; }
+    .note { background: #f5f8fd; border-left: 4px solid #6495df; border-radius: 8px; padding: 12px 15px; font-size: 14px; color: #465973; }
+    .nist-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .nist-item { padding: 18px; border: 1px solid #e2e9f3; border-radius: 12px; background: #fbfcfe; }
+    .nist-num { font-weight: 800; font-size: 12px; color: var(--blue); letter-spacing: .07em; margin-bottom: 8px; }
+    .tester { background: #f8fbff; border: 1px solid #d9e6fc; padding: 22px; border-radius: 12px; }
+    label { display: block; font-weight: 700; margin-bottom: 10px; }
+    input[type="url"] { width: 100%; border: 1px solid #9dacc1; border-radius: 8px; font: inherit; color: var(--ink); background: white; padding: 13px; }
+    .actions { margin: 14px 0 8px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    button { padding: 11px 19px; border: 0; border-radius: 8px; color: white; background: var(--blue); font-size: 15px; font-weight: 700; cursor: pointer; }
+    button:hover { background: #1e40af; }
+    button:disabled { opacity: .6; cursor: progress; }
+    #api-status { font-weight: 700; color: #52627b; }
+    #api-output { white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: auto; min-height: 108px; background: #17243b; border-radius: 10px; padding: 20px; color: #e2e8f0; font: 14px/1.65 Consolas, Monaco, monospace; }
+    details { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px 18px; border-radius: 10px; margin: 12px 0; }
+    summary { font-weight: 700; cursor: pointer; }
+    details p { margin: 12px 0 0; }
+    footer { color: #64748b; text-align: center; font-size: 13px; padding: 12px 20px 35px; }
+    @media(max-width:750px) {
+      .topbar .wrap { align-items: flex-start; flex-direction: column; padding: 15px 20px; gap: 7px; }
+      .topnav { gap: 10px; }
+      .hero { padding: 30px 0 25px; }
+      .card { padding: 20px; }
+      .stats, .nist-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="#dau-trang">☁ Cloud Computing Lab 01</a>
+      <nav class="topnav" aria-label="Điều hướng">
+        <a href="#so-sanh">So sánh</a>
+        <a href="#nist">NIST</a>
+        <a href="#kiem-thu">Kiểm thử API</a>
+        <a href="#phan-bien">Phản biện</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap" id="dau-trang">
+    <section class="hero">
+      <div class="eyebrow">Thực hành Điện toán đám mây · Bài 1</div>
+      <h1>Hello Cloud API</h1>
+      <p class="lead">Cấp phát môi trường phát triển trên GitHub Codespaces, xây dựng API với Node.js và Express, so sánh máy cá nhân với đám mây và liên hệ 5 đặc tính NIST SP 800-145.</p>
+      <div class="meta">
+        <span class="pill">Trần Nguyễn Quốc Thông</span>
+        <span class="pill">MSSV: 2324802010360</span>
+        <span class="pill">05/11/2026</span>
+      </div>
+    </section>
+
+    <main>
+      <section class="card" id="tong-quan">
+        <h2>1. Tổng quan bài thực hành</h2>
+        <p>Ứng dụng cung cấp endpoint <code>GET /</code> trả về JSON chứa <code>message</code>, <code>host</code>, <code>platform</code>, <code>cpus</code>, <code>memoryGB</code>, <code>uptimeSec</code> và <code>time</code>. Trang báo cáo này được triển khai độc lập bằng GitHub Pages từ thư mục <code>/docs</code>.</p>
+        <div class="stats">
+          <div class="stat"><strong>Node.js + Express</strong><span>Nền tảng và API</span></div>
+          <div class="stat"><strong>3000</strong><span>Cổng HTTP của Codespaces</span></div>
+          <div class="stat"><strong>5 NIST</strong><span>Đặc tính được đối chiếu</span></div>
+        </div>
+        <p class="subtle" style="margin-top:16px">Mã nguồn: <a href="https://github.com/Thongfank/notes-api-2324802010360" target="_blank" rel="noopener noreferrer">github.com/Thongfank/notes-api-2324802010360</a></p>
+      </section>
+
+      <section class="card" id="so-sanh">
+        <h2>2. Bảng so sánh môi trường</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Tiêu chí</th><th>Máy cá nhân</th><th>GitHub Codespaces</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Thời gian từ lúc bắt đầu đến khi chạy được <code>node -v</code></td>
+                <td>Chưa ghi nhận thời gian chuẩn bị ban đầu trên máy cá nhân.</td>
+                <td>Chưa ghi nhận chính xác thời gian khởi tạo bằng đồng hồ bấm giờ.</td>
+              </tr>
+              <tr>
+                <td>Số CPU, RAM</td>
+                <td>12 CPU logic; 15.8 GB RAM.</td>
+                <td>2 CPU logic; 7.8 GB RAM (giá trị từ ảnh API của lần thực hành trước).</td>
+              </tr>
+              <tr>
+                <td>Hệ điều hành</td>
+                <td>Windows 11 Pro; version 10.0.26300.</td>
+                <td>Linux; kernel 6.8.0-1064-azure (lần thực hành trước).</td>
+              </tr>
+              <tr>
+                <td>Cách truy cập từ thiết bị khác</td>
+                <td>Cần cấu hình mạng, tường lửa hoặc phương thức truy cập từ xa phù hợp.</td>
+                <td>HTTPS qua forwarded port 3000; đã kiểm thử trên điện thoại, sau đó chuyển cổng về Private.</td>
+              </tr>
+              <tr>
+                <td>Chi phí và cách đo</td>
+                <td>Chi phí thiết bị, điện năng và bảo trì; không đo theo core-hour.</td>
+                <td>Tài nguyên Codespaces đo theo thời gian compute (core-hours) và lưu trữ. Ảnh Billing tổng tài khoản tháng 11/2026 ghi Gross $0.20, Discount $0.20, Billed $0.00.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note"><strong>Ghi chú số liệu:</strong> Thông số máy cá nhân lấy từ PowerShell. Các giá trị Codespaces về CPU, RAM và kernel là số liệu đã chụp ở lần chạy trước; nếu Codespace mới trả về khác, cần cập nhật theo JSON mới. Số $0.20 là tổng mức sử dụng hiển thị trong ảnh Billing, chưa phải số core-hours riêng của repository. Thời gian chưa đo không được ghi thành số liệu thực nghiệm.</p>
+      </section>
+
+      <section class="card" id="nist">
+        <h2>3. Đối chiếu 5 đặc tính NIST</h2>
+        <div class="nist-grid">
+          <article class="nist-item"><div class="nist-num">01 / NIST</div><h3>On-demand Self-service</h3><p>Tự tạo Codespace bằng <strong>Create codespace on main</strong> mà không cần người quản trị cấp máy thủ công.</p></article>
+          <article class="nist-item"><div class="nist-num">02 / NIST</div><h3>Broad Network Access</h3><p>Truy cập API qua HTTPS từ trình duyệt máy tính và điện thoại khi cổng 3000 được đặt Public.</p></article>
+          <article class="nist-item"><div class="nist-num">03 / NIST</div><h3>Resource Pooling</h3><p>Sử dụng tài nguyên từ hạ tầng được GitHub quản lý và phân phối cho nhiều người dùng, không cần quản lý máy chủ vật lý.</p></article>
+          <article class="nist-item"><div class="nist-num">04 / NIST</div><h3>Rapid Elasticity</h3><p>Có thể tạo, dừng, khởi động lại Codespace và thay đổi cấu hình máy khi dịch vụ cho phép. Bài thực hành chưa đo tự động co giãn theo tải.</p></article>
+          <article class="nist-item"><div class="nist-num">05 / NIST</div><h3>Measured Service</h3><p>GitHub ghi nhận mức sử dụng tài nguyên. Ảnh Billing tháng 11/2026 cho thấy tổng giá trị sử dụng $0.20, được khấu trừ $0.20 và chưa phát sinh tiền phải trả.</p></article>
+        </div>
+      </section>
+
+      <section class="card" id="kiem-thu">
+        <h2>4. Kiểm thử Hello Cloud API trực tiếp</h2>
+        <p>Nhập URL <strong>Forwarded Address</strong> của cổng 3000 trong tab <strong>Ports</strong> của Codespaces để đọc kết quả JSON trực tiếp từ API.</p>
+        <div class="tester">
+          <label for="api-url">Địa chỉ API Codespaces (port 3000)</label>
+          <input id="api-url" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://ten-codespace-3000.app.github.dev/" aria-describedby="api-help">
+          <div class="actions">
+            <button type="button" id="call-api">Gọi API</button>
+            <span id="api-status" role="status" aria-live="polite">Chưa kiểm thử</span>
+          </div>
+          <pre id="api-output">Kết quả JSON sẽ hiển thị tại đây.</pre>
+          <p id="api-help" class="subtle">API sử dụng đường dẫn <code>GET /</code>, không phải <code>/api/hello</code>. Nút này chỉ hoạt động khi Codespace đang chạy, API được khởi động và cổng tạm thời đặt Public. Sau khi kiểm thử phải chuyển cổng về Private.</p>
+        </div>
+      </section>
+
+      <section class="card" id="phan-bien">
+        <h2>5. Câu hỏi phản biện</h2>
+        <details>
+          <summary>1. Trường host có thay đổi khi Stop rồi Start Codespace?</summary>
+          <p>Trường <code>host</code> có thể giữ nguyên hoặc thay đổi tùy cách GitHub cấp phát môi trường. Việc giữ nguyên hay thay đổi hostname không đủ để chứng minh hoặc bác bỏ Resource Pooling. Đặc tính này nói về việc nhà cung cấp quản lý và phân phối tài nguyên từ hạ tầng dùng chung. Muốn kết luận cho lần thử cụ thể, cần ghi kết quả <code>host</code> trước và sau khi Stop/Start.</p>
+        </details>
+        <details>
+          <summary>2. Codespaces thuộc IaaS, PaaS hay SaaS?</summary>
+          <p>Codespaces là môi trường phát triển được quản lý, có nhiều đặc điểm gần với PaaS: GitHub quản lý hạ tầng và việc cấp phát, còn sinh viên quản lý mã nguồn, thư viện và cấu hình ứng dụng. Giao diện IDE trên web có đặc điểm SaaS; đây không phải máy ảo IaaS thuần túy do người dùng tự quản trị toàn bộ.</p>
+        </details>
+        <details>
+          <summary>3. Hai hạn chế truyền thống và một rủi ro mới?</summary>
+          <p>Codespaces giảm thời gian cài đặt môi trường trên từng máy phòng lab và giảm phụ thuộc vào một thiết bị vật lý. Rủi ro mới là phụ thuộc Internet, khả năng phát sinh chi phí và nguy cơ lộ dữ liệu nếu công khai cổng hoặc commit bí mật lên repository Public.</p>
+        </details>
+      </section>
+
+      <section class="card">
+        <h2>6. Kết luận</h2>
+        <p>Bài thực hành giúp trải nghiệm việc cấp phát môi trường phát triển trên đám mây, viết API với Express, truy cập dịch vụ qua mạng và quan sát việc đo lường tài nguyên. Sau khi kiểm thử công khai, cần chuyển cổng 3000 về Private và Stop Codespace để bảo đảm an toàn, tiết kiệm hạn mức.</p>
+        <p class="subtle">Trang GitHub Pages này là website tĩnh nên vẫn xem được khi API Codespaces đã dừng.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer>Thực hành Điện toán đám mây · Lab 01 · Trần Nguyễn Quốc Thông · MSSV 2324802010360</footer>
+
+  <script>
+    (() => {
+      'use strict';
+      const input = document.getElementById('api-url');
+      const button = document.getElementById('call-api');
+      const status = document.getElementById('api-status');
+      const output = document.getElementById('api-output');
+
+      function setStatus(message, color) {
+        status.textContent = message;
+        status.style.color = color;
+      }
+
+      button.addEventListener('click', async () => {
+        let url;
+        try {
+          url = new URL(input.value.trim());
+          if (url.protocol !== 'https:' ||
+              !/^[a-z0-9-]+-3000\.app\.github\.dev$/.test(url.hostname)) {
+            throw new Error('Vui lòng dán đúng HTTPS Forwarded Address của cổng 3000.');
+          }
+          url.pathname = '/';
+          url.search = '';
+          url.hash = '';
+        } catch (error) {
+          setStatus('URL không hợp lệ', 'var(--red)');
+          output.textContent = error.message || 'Hãy nhập URL Codespaces hợp lệ.';
+          return;
+        }
+
+        button.disabled = true;
+        setStatus('Đang kết nối...', 'var(--blue)');
+        output.textContent = 'Đang yêu cầu GET / ...';
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 12000);
+
+        try {
+          const response = await fetch(url.toString(), {
+            method: 'GET', mode: 'cors', credentials: 'omit',
+            cache: 'no-store', signal: controller.signal
+          });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          if (typeof data.host !== 'string' ||
+              typeof data.cpus !== 'number' ||
+              typeof data.memoryGB !== 'number') {
+            throw new Error('JSON thiếu host, cpus hoặc memoryGB.');
+          }
+          setStatus('Kết nối thành công · HTTP 200 OK', 'var(--green)');
+          output.textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+          setStatus('Không thể kết nối API', 'var(--red)');
+          const reason = error.name === 'AbortError' ? 'Quá thời gian kết nối (12 giây).' : error.message;
+          output.textContent =
+            `Chi tiết: ${reason}\n\nKiểm tra:\n` +
+            '1. Codespace còn chạy và npm start đang hoạt động.\n' +
+            '2. Cổng 3000 đang Public trong lúc kiểm thử.\n' +
+            '3. URL được sao chép từ tab Ports, không tự đoán tên.\n' +
+            '4. API cho phép CORS từ https://thongfank.github.io.\n' +
+            '5. API sử dụng GET /, không phải /api/hello.';
+        } finally {
+          clearTimeout(timeout);
+          button.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
