@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Báo cáo Bài 1 Hello Cloud API - Thực hành Điện toán đám mây">
+  <meta name="description" content="Bài thực hành Cloud Computing Lab 01: Hello Cloud API bằng Node.js, Express và GitHub Codespaces; so sánh môi trường và đối chiếu 5 đặc tính NIST.">
   <title>Bài 1 | Hello Cloud API - Trần Nguyễn Quốc Thông</title>
   <style>
     :root {
@@ -50,6 +50,14 @@
     th, td { border: 1px solid #d7e0ed; padding: 14px; vertical-align: top; text-align: left; }
     th { background: #eaf1ff; color: #173f82; font-size: 14px; }
     tbody tr:nth-child(even) { background: #f9fbfe; }
+    .metric-label { display:block; font-size:12px; color:var(--muted); font-weight:650; letter-spacing:.02em; }
+    .value { font-size:18px; color:#163d82; font-weight:800; }
+    .source-tag { display:inline-block; padding:2px 7px; border-radius:6px; font-size:11px; font-weight:750; color:#1e40af; background:#eaf1ff; border:1px solid #c9dcff; margin-left:4px; white-space:nowrap; }
+    .source-tag.estimate { color:#854d0e; background:#fffbeb; border-color:#fde68a; }
+    .billing-summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:18px 0 13px; }
+    .billing-summary .billing-item { padding:18px; background:#f7faff; border:1px solid #dde9fc; border-radius:11px; }
+    .billing-summary strong { display:block; font-size:26px; color:#163d82; margin:5px 0 0; }
+    .billing-summary span { color:#52627b; font-size:13px; }
     .note { background: #f5f8fd; border-left: 4px solid #6495df; border-radius: 8px; padding: 12px 15px; font-size: 14px; color: #465973; }
     .nist-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
     .nist-item { padding: 18px; border: 1px solid #e2e9f3; border-radius: 12px; background: #fbfcfe; }
@@ -72,7 +80,7 @@
       .topnav { gap: 10px; }
       .hero { padding: 30px 0 25px; }
       .card { padding: 20px; }
-      .stats, .nist-grid { grid-template-columns: 1fr; }
+      .stats, .nist-grid, .billing-summary { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -123,33 +131,40 @@
             <tbody>
               <tr>
                 <td>Thời gian từ lúc bắt đầu đến khi chạy được <code>node -v</code></td>
-                <td>Chưa ghi nhận thời gian chuẩn bị ban đầu trên máy cá nhân.</td>
-                <td>Chưa ghi nhận chính xác thời gian khởi tạo bằng đồng hồ bấm giờ.</td>
+                <td><span class="value">03 phút</span> <span class="source-tag estimate">GIẢ ĐỊNH</span><br><span class="subtle">Mốc minh họa cho trường hợp chuẩn bị Node.js trên máy cá nhân. Chưa có phép đo thời gian cài đặt thực tế.</span></td>
+                <td><span class="value">01 phút 15 giây</span> <span class="source-tag estimate">ƯỚC TÍNH</span><br><span class="subtle">Mốc tham khảo cho thao tác Create Codespace → <code>node -v</code>, chưa được xác nhận bằng đồng hồ bấm giờ. Không dùng để kết luận đạt ngưỡng dưới 2 phút.</span></td>
               </tr>
               <tr>
                 <td>Số CPU, RAM</td>
-                <td>12 CPU logic; 15.8 GB RAM.</td>
-                <td>2 CPU logic; 7.8 GB RAM (giá trị từ ảnh API của lần thực hành trước).</td>
+                <td><span class="value">12 CPU logic · 15.8 GB RAM</span><br><span class="subtle">Đo bằng PowerShell trên Windows.</span><span class="source-tag">ĐÃ ĐO</span></td>
+                <td><span class="value">2 CPU logic · 7.8 GB RAM</span><br><span class="subtle">Thông số JSON API từ lần chạy trước; cần cập nhật nếu Codespace sau Rebuild trả kết quả khác.</span><span class="source-tag">ẢNH API CŨ</span></td>
               </tr>
               <tr>
                 <td>Hệ điều hành</td>
-                <td>Windows 11 Pro; version 10.0.26300.</td>
-                <td>Linux; kernel 6.8.0-1064-azure (lần thực hành trước).</td>
+                <td><strong>Windows 11 Pro</strong><br>Version 10.0.26300 <span class="source-tag">POWERSHELL</span></td>
+                <td><strong>Linux</strong><br>Kernel 6.8.0-1064-azure <span class="source-tag">ẢNH API CŨ</span></td>
               </tr>
               <tr>
-                <td>Cách truy cập từ thiết bị khác</td>
-                <td>Cần cấu hình mạng, tường lửa hoặc phương thức truy cập từ xa phù hợp.</td>
-                <td>HTTPS qua forwarded port 3000; đã kiểm thử trên điện thoại, sau đó chuyển cổng về Private.</td>
+                <td>Truy cập từ thiết bị khác</td>
+                <td>Phụ thuộc cấu hình mạng, tường lửa, LAN hoặc tunnel; chưa đo cấu hình chia sẻ riêng.</td>
+                <td>HTTPS qua cổng 3000 được forward; đã kiểm thử được trên điện thoại khi đặt Public, sau đó cần chuyển về Private.</td>
               </tr>
               <tr>
                 <td>Chi phí và cách đo</td>
-                <td>Chi phí thiết bị, điện năng và bảo trì; không đo theo core-hour.</td>
-                <td>Tài nguyên Codespaces đo theo thời gian compute (core-hours) và lưu trữ. Ảnh Billing tổng tài khoản tháng 11/2026 ghi Gross $0.20, Discount $0.20, Billed $0.00.</td>
+                <td>Thiết bị, điện năng và bảo trì; không có sẵn cơ chế tính phí theo core-hour.</td>
+                <td>Codespaces theo dõi compute (core-hours) và storage. <strong>Billing toàn tài khoản:</strong> Gross <strong>$0.20</strong>, Discount <strong>$0.20</strong>, Billed <strong>$0.00</strong> (ảnh ngày 05/11/2026). Cần lọc Product = Codespaces để xác định riêng mức dùng Codespaces.</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p class="note"><strong>Ghi chú số liệu:</strong> Thông số máy cá nhân lấy từ PowerShell. Các giá trị Codespaces về CPU, RAM và kernel là số liệu đã chụp ở lần chạy trước; nếu Codespace mới trả về khác, cần cập nhật theo JSON mới. Số $0.20 là tổng mức sử dụng hiển thị trong ảnh Billing, chưa phải số core-hours riêng của repository. Thời gian chưa đo không được ghi thành số liệu thực nghiệm.</p>
+        <h3>Ảnh chụp mức sử dụng GitHub Billing</h3>
+        <p class="subtle">Kỳ 01–30/11/2026 · số liệu đến ngày 05/11/2026 · phạm vi: <strong>Metered usage toàn tài khoản</strong> (chưa lọc Codespaces)</p>
+        <div class="billing-summary" aria-label="Tổng hợp Billing toàn tài khoản">
+          <div class="billing-item"><span>Gross usage</span><strong>$0.20</strong><span>Giá trị sử dụng trước khấu trừ</span></div>
+          <div class="billing-item"><span>Discount</span><strong>$0.20</strong><span>Được khấu trừ theo hạn mức</span></div>
+          <div class="billing-item"><span>Billed</span><strong>$0.00</strong><span>Số tiền thanh toán tại thời điểm chụp</span></div>
+        </div>
+        <p class="note"><strong>Phân biệt dữ liệu:</strong> Các số CPU/RAM máy cá nhân là kết quả PowerShell; thông số Codespaces lấy từ ảnh API lần trước. <strong>03 phút và 01 phút 15 giây là giá trị minh họa/ước tính, không phải thời gian đã đo</strong>. Số $0.20 phản ánh <strong>tổng Metered usage của tài khoản</strong>, không được khẳng định là mức dùng riêng của Codespaces hay repository. Khi có kết quả đo mới, cần cập nhật bảng trước khi nộp.</p>
       </section>
 
       <section class="card" id="nist">
@@ -159,7 +174,7 @@
           <article class="nist-item"><div class="nist-num">02 / NIST</div><h3>Broad Network Access</h3><p>Truy cập API qua HTTPS từ trình duyệt máy tính và điện thoại khi cổng 3000 được đặt Public.</p></article>
           <article class="nist-item"><div class="nist-num">03 / NIST</div><h3>Resource Pooling</h3><p>Sử dụng tài nguyên từ hạ tầng được GitHub quản lý và phân phối cho nhiều người dùng, không cần quản lý máy chủ vật lý.</p></article>
           <article class="nist-item"><div class="nist-num">04 / NIST</div><h3>Rapid Elasticity</h3><p>Có thể tạo, dừng, khởi động lại Codespace và thay đổi cấu hình máy khi dịch vụ cho phép. Bài thực hành chưa đo tự động co giãn theo tải.</p></article>
-          <article class="nist-item"><div class="nist-num">05 / NIST</div><h3>Measured Service</h3><p>GitHub ghi nhận mức sử dụng tài nguyên. Ảnh Billing tháng 11/2026 cho thấy tổng giá trị sử dụng $0.20, được khấu trừ $0.20 và chưa phát sinh tiền phải trả.</p></article>
+          <article class="nist-item"><div class="nist-num">05 / NIST</div><h3>Measured Service</h3><p>GitHub theo dõi compute và lưu trữ theo mức sử dụng. Ảnh Billing ngày 05/11/2026 ghi tổng Metered usage toàn tài khoản $0.20, được khấu trừ $0.20 và Billed $0.00; đây chưa phải số riêng của Codespaces.</p></article>
         </div>
       </section>
 
@@ -197,7 +212,7 @@
       <section class="card">
         <h2>6. Kết luận</h2>
         <p>Bài thực hành giúp trải nghiệm việc cấp phát môi trường phát triển trên đám mây, viết API với Express, truy cập dịch vụ qua mạng và quan sát việc đo lường tài nguyên. Sau khi kiểm thử công khai, cần chuyển cổng 3000 về Private và Stop Codespace để bảo đảm an toàn, tiết kiệm hạn mức.</p>
-        <p class="subtle">Trang GitHub Pages này là website tĩnh nên vẫn xem được khi API Codespaces đã dừng.</p>
+        <p class="subtle">Trang GitHub Pages này là website tĩnh nên vẫn xem được khi API Codespaces đã dừng. Khi Codespace đã Stop hoặc cổng Private, tính năng gọi API trực tiếp trên Pages sẽ không hoạt động công khai.</p>
       </section>
     </main>
   </div>
