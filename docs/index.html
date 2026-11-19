@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Bài thực hành Cloud Computing Lab 01: Hello Cloud API bằng Node.js, Express và GitHub Codespaces; so sánh môi trường và đối chiếu 5 đặc tính NIST.">
-  <title>Bài 1 | Hello Cloud API - Trần Nguyễn Quốc Thông</title>
+  <meta name="description" content="Báo cáo thực hành Điện toán đám mây Lab 01–03: Hello Cloud API, Docker, CloudSim Plus, MongoDB Atlas và Supabase Storage.">
+  <title>Cloud Computing Lab 01–03 | Trần Nguyễn Quốc Thông</title>
   <style>
     :root {
       --blue: #1d4ed8;
@@ -74,21 +74,39 @@
     details { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px 18px; border-radius: 10px; margin: 12px 0; }
     summary { font-weight: 700; cursor: pointer; }
     details p { margin: 12px 0 0; }
+    #lab2 h3, #lab3 h3 { margin-top: 24px; }
+    #lab2 pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #17243b; color: #e2e8f0; border-radius: 10px; padding: 16px; }
+    .method-chart { background: #f7faff; border: 1px solid #e0eafb; border-radius: 12px; margin: 16px 0; padding: 18px; }
+    .method-chart p { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; margin: 10px 0 5px; font-weight: 650; }
+    .bar-track { background: #e7edf5; border-radius: 6px; height: 24px; overflow: hidden; }
+    .bar { height: 100%; border-radius: 6px; }
+    .full-scan { width: 100%; background: #b45309; }
+    .index-scan { width: 28.55%; background: #15803d; }
+    .diagram-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 16px 0; }
+    .diagram-panel { margin: 0; border: 1px solid #dfe6f0; border-radius: 12px; padding: 14px; background: #f8fafc; }
+    .diagram-panel svg { display: block; width: 100%; height: auto; }
+    .diagram-panel figcaption { font-size: 13px; color: var(--muted); text-align: center; }
+    .checks { padding-left: 22px; color: #334155; }
+    .checks li { margin-bottom: 6px; }
+    .link-list { font-size: 14px; padding-left: 22px; overflow-wrap: anywhere; }
     footer { color: #64748b; text-align: center; font-size: 13px; padding: 12px 20px 35px; }
     @media(max-width:750px) {
       .topbar .wrap { align-items: flex-start; flex-direction: column; padding: 15px 20px; gap: 7px; }
       .topnav { gap: 10px; }
       .hero { padding: 30px 0 25px; }
       .card { padding: 20px; }
-      .stats, .nist-grid, .billing-summary { grid-template-columns: 1fr; }
+      .stats, .nist-grid, .billing-summary, .diagram-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <header class="topbar">
     <div class="wrap">
-      <a class="brand" href="#dau-trang">☁ Cloud Computing Lab 01</a>
+      <a class="brand" href="#dau-trang">☁ Cloud Computing Lab</a>
       <nav class="topnav" aria-label="Điều hướng">
+        <a href="#tong-quan">Lab 01</a>
+        <a href="#lab2">Lab 02</a>
+        <a href="#lab3">Lab 03</a>
         <a href="#so-sanh">So sánh</a>
         <a href="#nist">NIST</a>
         <a href="#kiem-thu">Kiểm thử API</a>
@@ -96,21 +114,20 @@
       </nav>
     </div>
   </header>
-
   <div class="wrap" id="dau-trang">
     <section class="hero">
-      <div class="eyebrow">Thực hành Điện toán đám mây · Bài 1</div>
-      <h1>Hello Cloud API</h1>
-      <p class="lead">Cấp phát môi trường phát triển trên GitHub Codespaces, xây dựng API với Node.js và Express, so sánh máy cá nhân với đám mây và liên hệ 5 đặc tính NIST SP 800-145.</p>
+      <div class="eyebrow">Thực hành Điện toán đám mây · Lab 01–03</div>
+      <h1>Cloud Computing — Notes API</h1>
+      <p class="lead">Từ Hello Cloud trên GitHub Codespaces, đóng gói ứng dụng bằng Docker và mô phỏng CloudSim Plus đến xây dựng REST API với MongoDB Atlas và Supabase Storage.</p>
       <div class="meta">
         <span class="pill">Trần Nguyễn Quốc Thông</span>
         <span class="pill">MSSV: 2324802010360</span>
-        <span class="pill">05/11/2026</span>
+        <span class="pill">05–19/11/2026</span>
       </div>
     </section>
-
     <main>
       <section class="card" id="tong-quan">
+        <div class="eyebrow">Lab 01 · Hello Cloud API</div>
         <h2>1. Tổng quan bài thực hành</h2>
         <p>Ứng dụng cung cấp endpoint <code>GET /</code> trả về JSON chứa <code>message</code>, <code>host</code>, <code>platform</code>, <code>cpus</code>, <code>memoryGB</code>, <code>uptimeSec</code> và <code>time</code>. Trang báo cáo này được triển khai độc lập bằng GitHub Pages từ thư mục <code>/docs</code>.</p>
         <div class="stats">
@@ -120,7 +137,6 @@
         </div>
         <p class="subtle" style="margin-top:16px">Mã nguồn: <a href="https://github.com/Thongfank/notes-api-2324802010360" target="_blank" rel="noopener noreferrer">github.com/Thongfank/notes-api-2324802010360</a></p>
       </section>
-
       <section class="card" id="so-sanh">
         <h2>2. Bảng so sánh môi trường</h2>
         <div class="table-scroll">
@@ -130,17 +146,9 @@
             </thead>
             <tbody>
               <tr>
-              <tr>
-  <td>Thời gian từ lúc bắt đầu đến khi chạy được <code>node -v</code></td>
-  <td>
-    <span class="value">03 phút</span><br>
-    <span class="subtle">Thời gian cho quá trình chuẩn bị môi trường</span>
-  </td>
-  <td>
-    <span class="value">01 phút 15 giây</span><br>
-    <span class="subtle">Thời gian từ khi tạo Codespace đến khi chạy lệnh <code>node -v</code>. Phiên bản Node.js đã xác nhận: <strong>v22.23.4</strong>.</span>
-  </td>
-</tr>
+                <td>Thời gian từ lúc bắt đầu đến khi chạy được <code>node -v</code></td>
+                <td><span class="value">03 phút</span><br><span class="subtle">Mốc tham khảo cho quá trình chuẩn bị môi trường; chưa có bản ghi bấm giờ.</span></td>
+                <td><span class="value">01 phút 15 giây</span><br><span class="subtle">Mốc tham khảo từ khi tạo Codespace đến khi chạy <code>node -v</code>. Phiên bản đã xác nhận: <strong>v22.23.4</strong>.</span></td>
               </tr>
               <tr>
                 <td>Số CPU, RAM</td>
@@ -187,7 +195,6 @@
         </div>
         <p class="note"><strong>Đối chiếu nguồn:</strong> Tổng Gross $0.39 là số của <strong>toàn repository</strong>, không phải chỉ riêng Codespaces. Ảnh được chụp chưa hiển thị hết các SKU, nên các dòng ở bảng chi tiết không cộng đủ thành $0.39. Dữ liệu CPU/RAM và hệ điều hành Codespaces lấy từ JSON API ngày 05/11/2026. Thời gian khởi tạo máy chưa có bản ghi đo bằng đồng hồ.</p>
       </section>
-
       <section class="card" id="nist">
         <h2>3. Đối chiếu 5 đặc tính NIST</h2>
         <div class="nist-grid">
@@ -198,7 +205,6 @@
           <article class="nist-item"><div class="nist-num">05 / NIST</div><h3>Measured Service</h3><p>GitHub đo tài nguyên theo mức sử dụng. Ảnh Usage breakdown của repository <strong>notes-api-2324802010360</strong> ghi Gross <strong>$0.39</strong>, Billed <strong>$0.00</strong>, trong đó Codespaces compute 2-core sử dụng <strong>0.55 giờ</strong> với Gross <strong>$0.10</strong>.</p></article>
         </div>
       </section>
-
       <section class="card" id="kiem-thu">
         <h2>4. Kiểm thử Hello Cloud API trực tiếp</h2>
         <p>Nhập URL <strong>Forwarded Address</strong> của cổng 3000 trong tab <strong>Ports</strong> của Codespaces để đọc kết quả JSON trực tiếp từ API.</p>
@@ -210,10 +216,9 @@
             <span id="api-status" role="status" aria-live="polite">Chưa kiểm thử</span>
           </div>
           <pre id="api-output">Kết quả JSON sẽ hiển thị tại đây.</pre>
-          <p id="api-help" class="subtle">API sử dụng đường dẫn <code>GET /</code>, không phải <code>/api/hello</code>. Nút này chỉ hoạt động khi Codespace đang chạy, API được khởi động và cổng tạm thời đặt Public. Sau khi kiểm thử phải chuyển cổng về Private.</p>
+          <p id="api-help" class="subtle">API sử dụng đường dẫn <code>GET /</code>, không phải <code>/api/hello</code>. Chỉ dùng tính năng kiểm thử công khai với bản Hello Cloud độc lập của Lab 01 hoặc image Lab 02 chưa có CRUD. Với API Lab 03 chưa có xác thực, giữ cổng Private và kiểm thử bằng curl trong Codespaces.</p>
         </div>
       </section>
-
       <section class="card" id="phan-bien">
         <h2>5. Câu hỏi phản biện</h2>
         <details>
@@ -229,26 +234,21 @@
           <p>Codespaces giảm thời gian cài đặt môi trường trên từng máy phòng lab và giảm phụ thuộc vào một thiết bị vật lý. Rủi ro mới là phụ thuộc Internet, khả năng phát sinh chi phí và nguy cơ lộ dữ liệu nếu công khai cổng hoặc commit bí mật lên repository Public.</p>
         </details>
       </section>
-
       <section class="card">
         <h2>6. Kết luận</h2>
         <p>Bài thực hành giúp trải nghiệm việc cấp phát môi trường phát triển trên đám mây, viết API với Express, truy cập dịch vụ qua mạng và quan sát việc đo lường tài nguyên. Sau khi kiểm thử công khai, cần chuyển cổng 3000 về Private và Stop Codespace để bảo đảm an toàn, tiết kiệm hạn mức.</p>
         <p class="subtle">Trang GitHub Pages này là website tĩnh nên vẫn xem được khi API Codespaces đã dừng. Khi Codespace đã Stop hoặc cổng Private, tính năng gọi API trực tiếp trên Pages sẽ không hoạt động công khai.</p>
       </section>
-    </main>
-
 <section class="card" id="lab2">
+  <div class="eyebrow">Lab 02 · Ảo hóa và mô phỏng</div>
   <h2>LAB 02 – Container và CloudSim Plus</h2>
-
   <p>
     Bài thực hành đóng gói Hello Cloud API bằng Docker,
     triển khai nhiều container, giới hạn tài nguyên,
     phát hành image lên GHCR và mô phỏng trung tâm
     dữ liệu bằng CloudSim Plus.
   </p>
-
   <h3>1. GitHub Container Registry</h3>
-
   <p>
     <strong>Package:</strong>
     <a href="https://github.com/users/Thongfank/packages/container/package/notes-api"
@@ -256,11 +256,8 @@
       thongfank/notes-api
     </a>
   </p>
-
   <pre>docker pull ghcr.io/thongfank/notes-api:1.0</pre>
-
   <h3>2. Dockerfile</h3>
-
   <pre id="dockerfile">FROM node:22-alpine
 WORKDIR /app
 COPY package*.json ./
@@ -270,15 +267,12 @@ ENV PORT=3000
 EXPOSE 3000
 USER node
 CMD ["node", "src/server.js"]</pre>
-
   <h3>3. Kết quả kiểm thử container</h3>
-
   <p>
     Hai container notes1 và notes2 chạy cùng
     một Docker image. Container notes2 được
     giới hạn 0,5 CPU và 128 MiB RAM bằng cgroups.
   </p>
-
   <div class="stats">
     <div class="stat">
       <strong>0,430 giây</strong>
@@ -293,9 +287,7 @@ CMD ["node", "src/server.js"]</pre>
       <span>Giới hạn CPU notes2</span>
     </div>
   </div>
-
   <h3>4. So sánh máy ảo và container</h3>
-
   <div class="table-scroll">
     <table>
       <thead>
@@ -332,11 +324,8 @@ CMD ["node", "src/server.js"]</pre>
       </tbody>
     </table>
   </div>
-
   <h3>5. Kết quả mô phỏng CloudSim Plus</h3>
-
   <p>Kết quả thực nghiệm đã tổng hợp trong buổi 2:</p>
-
   <div class="table-scroll">
     <table>
       <thead>
@@ -370,16 +359,13 @@ CMD ["node", "src/server.js"]</pre>
       </tbody>
     </table>
   </div>
-
   <p>
     Trong kết quả đã ghi nhận, tăng số VM hoặc
     Cloudlet không làm thay đổi thời gian hoàn thành
     cuối cùng. Khi sử dụng SpaceShared, thời gian
     hoàn thành tăng lên 40,3 giây.
   </p>
-
   <h3>6. Câu hỏi phản biện</h3>
-
   <details>
     <summary>
       Câu 1. Vì sao API vẫn báo RAM của máy chủ?
@@ -393,7 +379,6 @@ CMD ["node", "src/server.js"]</pre>
       khi vượt quá giới hạn RAM.
     </p>
   </details>
-
   <details>
     <summary>
       Câu 2. TimeShared và SpaceShared khác nhau thế nào?
@@ -407,7 +392,6 @@ CMD ["node", "src/server.js"]</pre>
       nâng cao hiệu suất sử dụng tài nguyên.
     </p>
   </details>
-
   <details>
     <summary>
       Câu 3. Lợi ích và hạn chế của mô phỏng là gì?
@@ -420,11 +404,170 @@ CMD ["node", "src/server.js"]</pre>
     </p>
   </details>
 </section>
+      <section class="card" id="lab3">
+        <div class="eyebrow">Lab 03 · Lưu trữ phân tán và NoSQL · 19/11/2026</div>
+        <h2>LAB 03 – MongoDB Atlas và Supabase Storage</h2>
+        <p>Phát triển REST API quản lý ghi chú có cơ sở dữ liệu NoSQL được quản lý, tải tệp đính kèm lên kho lưu trữ đối tượng và đánh giá chỉ mục trên tập dữ liệu 2.000 tài liệu.</p>
 
+        <div class="stats">
+          <div class="stat"><strong>2.000</strong><span>Tài liệu mẫu đã chèn</span></div>
+          <div class="stat"><strong>3,50 lần</strong><span>Tỷ số giảm số tài liệu quét</span></div>
+          <div class="stat"><strong>71,45%</strong><span>Tỷ lệ giảm khối lượng quét</span></div>
+        </div>
+
+        <h3>1. Môi trường và dịch vụ triển khai</h3>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Thành phần</th><th>Thông tin thực hành</th></tr></thead>
+            <tbody>
+              <tr><td>Nền tảng phát triển</td><td>GitHub Codespaces · Node.js · Express</td></tr>
+              <tr><td>MongoDB Atlas</td><td>Cluster0 · Free · MongoDB 8.0.39</td></tr>
+              <tr><td>Vùng triển khai Atlas</td><td>AWS Singapore (ap-southeast-1)</td></tr>
+              <tr><td>Database / Collection</td><td><code>notes / notes</code></td></tr>
+              <tr><td>Replica set</td><td>1 Primary và 2 Secondary — quan sát tại Metrics ngày 19/11/2026</td></tr>
+              <tr><td>Object Storage</td><td>Supabase Storage · bucket <code>attachments</code> (Public)</td></tr>
+              <tr><td>Thư viện</td><td>Mongoose, dotenv, Multer, @supabase/supabase-js</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Ứng dụng lưu nội dung và metadata ghi chú tại MongoDB Atlas; tệp đính kèm được lưu tại Supabase Storage, trường <code>attachmentUrl</code> liên kết tới tệp.</p>
+
+        <h3>2. Kiểm thử REST API</h3>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Method</th><th>Endpoint / tình huống</th><th>HTTP Status</th></tr></thead>
+            <tbody>
+              <tr><td>POST</td><td><code>/notes</code> — tạo ghi chú</td><td>201 Created</td></tr>
+              <tr><td>GET</td><td><code>/notes</code> và <code>/notes?tag=nosql</code> — danh sách, lọc</td><td>200 OK</td></tr>
+              <tr><td>GET</td><td><code>/notes/:id</code> — chi tiết</td><td>200 OK</td></tr>
+              <tr><td>PUT</td><td><code>/notes/:id</code> — cập nhật</td><td>200 OK</td></tr>
+              <tr><td>POST</td><td><code>/notes/:id/attachment</code> — tải tệp</td><td>200 OK</td></tr>
+              <tr><td>DELETE</td><td><code>/notes/:id</code> — xóa tài liệu</td><td>204 No Content</td></tr>
+              <tr><td>POST</td><td><code>/notes</code> — thiếu tiêu đề bắt buộc</td><td>400 Bad Request</td></tr>
+              <tr><td>GET</td><td><code>/notes/:id</code> — tài liệu không tồn tại</td><td>404 Not Found</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="subtle">Kiểm thử bằng curl trong Codespaces. Tệp đính kèm được giới hạn 2 MiB. Bucket Public chỉ sử dụng dữ liệu thử nghiệm không nhạy cảm.</p>
+
+        <h3>3. Kết quả đo hiệu quả chỉ mục</h3>
+        <p>Chạy <code>node scripts/seed.js</code> để chèn dữ liệu và <code>node scripts/explain.js</code> để so sánh quét toàn bộ bằng <code>$natural</code> với truy vấn dùng chỉ mục <code>tags_1</code>. Điều kiện truy vấn: <code>tags: 'docker'</code>.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Phương pháp</th><th>docsExamined</th><th>returned</th><th>ms</th></tr></thead>
+            <tbody>
+              <tr><td>Quét toàn bộ</td><td>2.000</td><td>571</td><td>1</td></tr>
+              <tr><td>Dùng chỉ mục</td><td>571</td><td>571</td><td>1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="method-chart" role="img" aria-label="Quét toàn bộ 2000 tài liệu; dùng chỉ mục 571 tài liệu, giảm 71,45 phần trăm.">
+          <p><span>Quét toàn bộ</span><span>2.000 tài liệu · 100%</span></p>
+          <div class="bar-track"><div class="bar full-scan"></div></div>
+          <p><span>Dùng chỉ mục</span><span>571 tài liệu · 28,55%</span></p>
+          <div class="bar-track"><div class="bar index-scan"></div></div>
+        </div>
+        <p><strong>Tỷ số:</strong> 2.000 / 571 ≈ 3,50 lần.<br><strong>Tỷ lệ giảm:</strong> (2.000 − 571) / 2.000 × 100 = 71,45%.</p>
+        <p class="note"><strong>Nhận xét:</strong> Chỉ mục giúp giảm 1.429 lượt quét tài liệu nhưng vẫn trả về đúng 571 kết quả. Hai phép đo đều ghi nhận 1 ms; thí nghiệm này chứng minh giảm khối lượng quét, chưa chứng minh tăng tốc độ thực thi 3,50 lần.</p>
+        <p class="subtle"><span class="source-tag">ĐÃ ĐO 19/11/2026</span> Nguồn: kết quả console.table của scripts/explain.js.</p>
+
+        <h3>4. Sơ đồ so sánh MongoDB Atlas và HDFS</h3>
+        <div class="diagram-grid">
+          <figure class="diagram-panel">
+            <svg viewBox="0 0 340 272" role="img" aria-label="MongoDB replica set với Primary shard-00-01, hai Secondary shard-00-00 và shard-00-02" xmlns="http://www.w3.org/2000/svg">
+              <defs><marker id="atlas-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#15803d"/></marker></defs>
+              <g font-family="system-ui, Arial, sans-serif" text-anchor="middle" fill="#17243b" font-size="12">
+                <text x="170" y="19" font-size="16" font-weight="700">MongoDB Atlas</text>
+                <rect x="110" y="34" width="120" height="34" rx="6" fill="#e2e8f0"/>
+                <text x="170" y="55">Notes API</text>
+                <path d="M170 68 V90" stroke="#15803d" stroke-width="1.5" marker-end="url(#atlas-arrow)"/>
+                <rect x="77" y="95" width="186" height="65" rx="8" fill="#dcfce7" stroke="#15803d"/>
+                <text x="170" y="116" font-weight="700">Primary</text>
+                <text x="170" y="133">shard-00-01</text>
+                <text x="170" y="149" font-size="11">Dữ liệu + Oplog</text>
+                <path d="M170 160 V182 H83 V205 M170 182 H257 V205" fill="none" stroke="#15803d" stroke-width="1.5" marker-end="url(#atlas-arrow)"/>
+                <text x="170" y="176" font-size="10" fill="#15803d">Nhân bản</text>
+                <rect x="8" y="211" width="150" height="52" rx="7" fill="#dcfce7" stroke="#15803d"/>
+                <rect x="182" y="211" width="150" height="52" rx="7" fill="#dcfce7" stroke="#15803d"/>
+                <text x="83" y="232" font-weight="700">Secondary</text>
+                <text x="83" y="250">shard-00-00</text>
+                <text x="257" y="232" font-weight="700">Secondary</text>
+                <text x="257" y="250">shard-00-02</text>
+              </g>
+            </svg>
+            <figcaption>Replica set: ba bản sao dữ liệu trên ba nút.</figcaption>
+          </figure>
+          <figure class="diagram-panel">
+            <svg viewBox="0 0 340 272" role="img" aria-label="HDFS NameNode quản lý metadata, DataNode 1 đến 3 lưu cùng một khối A" xmlns="http://www.w3.org/2000/svg">
+              <defs><marker id="hdfs-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#1d4ed8"/></marker></defs>
+              <g font-family="system-ui, Arial, sans-serif" text-anchor="middle" fill="#17243b" font-size="12">
+                <text x="170" y="19" font-size="16" font-weight="700">HDFS</text>
+                <rect x="110" y="34" width="120" height="34" rx="6" fill="#e2e8f0"/>
+                <text x="170" y="55">Client</text>
+                <path d="M170 68 V90" stroke="#1d4ed8" stroke-width="1.5" marker-end="url(#hdfs-arrow)"/>
+                <rect x="77" y="95" width="186" height="65" rx="8" fill="#dbeafe" stroke="#1d4ed8"/>
+                <text x="170" y="120" font-weight="700">NameNode</text>
+                <text x="170" y="140" font-size="11">Quản lý metadata</text>
+                <path d="M170 160 V182 H55 V207 M170 182 V207 M170 182 H285 V207" fill="none" stroke="#1d4ed8" stroke-dasharray="4 3"/>
+                <rect x="6" y="211" width="98" height="52" rx="6" fill="#dbeafe" stroke="#1d4ed8"/>
+                <rect x="121" y="211" width="98" height="52" rx="6" fill="#dbeafe" stroke="#1d4ed8"/>
+                <rect x="236" y="211" width="98" height="52" rx="6" fill="#dbeafe" stroke="#1d4ed8"/>
+                <text x="55" y="232" font-weight="700" font-size="11">DataNode 1</text><text x="55" y="250">Block A</text>
+                <text x="170" y="232" font-weight="700" font-size="11">DataNode 2</text><text x="170" y="250">Block A</text>
+                <text x="285" y="232" font-weight="700" font-size="11">DataNode 3</text><text x="285" y="250">Block A</text>
+                <path d="M104 247 H117 M219 247 H232" stroke="#1d4ed8" stroke-width="1.4" marker-end="url(#hdfs-arrow)"/>
+              </g>
+            </svg>
+            <figcaption>Replication factor 3: ba bản sao của cùng một block; NameNode quản lý metadata, không lưu block.</figcaption>
+          </figure>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Tiêu chí</th><th>MongoDB Atlas</th><th>HDFS</th></tr></thead>
+            <tbody>
+              <tr><td>Loại hệ thống</td><td>Cơ sở dữ liệu NoSQL</td><td>Hệ thống tệp phân tán</td></tr>
+              <tr><td>Kiến trúc</td><td>Primary – Secondary</td><td>NameNode – DataNode</td></tr>
+              <tr><td>Đơn vị nhân bản</td><td>Tập dữ liệu qua các thao tác oplog</td><td>Khối dữ liệu của tệp</td></tr>
+              <tr><td>Số bản sao</td><td>Ba nút giữ dữ liệu</td><td>Ba bản sao mỗi khối theo cấu hình mặc định</td></tr>
+              <tr><td>Khả năng phục hồi</td><td>Bầu Primary mới khi đủ đa số</td><td>Tạo lại bản sao khối khi DataNode gặp lỗi</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="subtle">Vai trò các nút Atlas theo ảnh Metrics ngày 19/11/2026; Primary có thể thay đổi sau bầu chọn. Sơ đồ HDFS là mô hình minh họa, không phải môi trường thực nghiệm đã triển khai.</p>
+
+        <h3>5. Câu hỏi phản biện</h3>
+        <details open>
+          <summary>Câu 1. Điều gì xảy ra khi collection có 2 triệu tài liệu?</summary>
+          <p>Nếu giữ nguyên tỷ lệ tài liệu thỏa điều kiện (28,55%), quét toàn bộ phải kiểm tra 2.000.000 tài liệu, trong khi dùng chỉ mục dự kiến kiểm tra khoảng 571.000 tài liệu. Như vậy giảm khoảng 1.429.000 lượt quét. Đây là ngoại suy, không phải số liệu đã đo; thời gian còn phụ thuộc RAM, I/O, kế hoạch truy vấn và tải. Giới hạn 100 thao tác/giây theo đề bài là số thao tác database, không phải số tài liệu quét mỗi giây.</p>
+        </details>
+        <details open>
+          <summary>Câu 2. Vì sao lưu tệp trên Supabase thay vì MongoDB?</summary>
+          <p>Supabase Storage chuyên lưu trữ đối tượng như ảnh và tài liệu. MongoDB lưu URL và metadata giúp tài liệu gọn hơn, giảm lượng dữ liệu truy vấn và tránh giới hạn BSON 16 MiB cho một tài liệu. File được phục vụ qua URL riêng; cần kiểm soát quyền truy cập, vòng đời và xóa file không còn được tham chiếu.</p>
+        </details>
+        <details open>
+          <summary>Câu 3. Ý nghĩa của ba bản sao trong Atlas và HDFS?</summary>
+          <p>Cả hai dùng nhân bản để tăng độ bền và khả năng chịu lỗi. MongoDB Atlas nhân bản tập dữ liệu thông qua oplog từ Primary sang các Secondary và có thể bầu Primary mới. HDFS nhân bản từng khối tệp trên nhiều DataNode, do NameNode quản lý vị trí và số bản sao. Đơn vị nhân bản của hai hệ thống khác nhau.</p>
+        </details>
+
+        <h3>6. Bảo mật và sản phẩm nộp</h3>
+        <ul class="checks">
+          <li>Không commit <code>.env</code>; chỉ cấp quyền readWrite trên database notes cho notes_app.</li>
+          <li>Supabase Secret Key chỉ dùng tại server, không đưa vào mã HTML hoặc GitHub Pages.</li>
+          <li>Network Access 0.0.0.0/0 dùng tạm cho lab; cần giới hạn địa chỉ tin cậy khi có thể.</li>
+          <li>Giữ port 3000 Private khi API CRUD chưa được xác thực; chỉ dùng file mẫu trong bucket Public.</li>
+          <li>Minh chứng: kết quả explain.js và sơ đồ Atlas – HDFS; mã nguồn commit Bài 3.</li>
+        </ul>
+        <p class="subtle">Tài liệu tham khảo:</p>
+        <ul class="link-list">
+          <li><a href="https://www.mongodb.com/docs/manual/reference/explain-results/" target="_blank" rel="noopener noreferrer">MongoDB — Explain Results</a></li>
+          <li><a href="https://www.mongodb.com/docs/manual/core/replica-set-members/" target="_blank" rel="noopener noreferrer">MongoDB — Replica Set Members</a></li>
+          <li><a href="https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html" target="_blank" rel="noopener noreferrer">Apache Hadoop — HDFS Architecture</a></li>
+          <li><a href="https://supabase.com/docs/guides/storage/buckets/fundamentals" target="_blank" rel="noopener noreferrer">Supabase — Storage Buckets</a></li>
+        </ul>
+      </section>
+    </main>
   </div>
-
-  <footer>Thực hành Điện toán đám mây · Lab 01 · Trần Nguyễn Quốc Thông · MSSV 2324802010360</footer>
-
+  <footer>Thực hành Điện toán đám mây · Lab 01–03 · Trần Nguyễn Quốc Thông · MSSV 2324802010360</footer>
   <script>
     (() => {
       'use strict';
@@ -432,17 +575,15 @@ CMD ["node", "src/server.js"]</pre>
       const button = document.getElementById('call-api');
       const status = document.getElementById('api-status');
       const output = document.getElementById('api-output');
-
       function setStatus(message, color) {
         status.textContent = message;
         status.style.color = color;
       }
-
       button.addEventListener('click', async () => {
         let url;
         try {
           url = new URL(input.value.trim());
-          if (url.protocol !== 'https:' ||
+          if (url.protocol !== 'https:' || url.username || url.password || url.port ||
               !/^[a-z0-9-]+-3000\.app\.github\.dev$/.test(url.hostname)) {
             throw new Error('Vui lòng dán đúng HTTPS Forwarded Address của cổng 3000.');
           }
@@ -454,13 +595,11 @@ CMD ["node", "src/server.js"]</pre>
           output.textContent = error.message || 'Hãy nhập URL Codespaces hợp lệ.';
           return;
         }
-
         button.disabled = true;
         setStatus('Đang kết nối...', 'var(--blue)');
         output.textContent = 'Đang yêu cầu GET / ...';
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 12000);
-
         try {
           const response = await fetch(url.toString(), {
             method: 'GET', mode: 'cors', credentials: 'omit',
@@ -480,8 +619,8 @@ CMD ["node", "src/server.js"]</pre>
           const reason = error.name === 'AbortError' ? 'Quá thời gian kết nối (12 giây).' : error.message;
           output.textContent =
             `Chi tiết: ${reason}\n\nKiểm tra:\n` +
-            '1. Codespace còn chạy và npm start đang hoạt động.\n' +
-            '2. Cổng 3000 đang Public trong lúc kiểm thử.\n' +
+            '1. Codespace còn chạy và Hello Cloud đang hoạt động.\n' +
+            '2. Chỉ public API Hello Cloud độc lập; giữ API Lab 03 ở Private.\n' +
             '3. URL được sao chép từ tab Ports, không tự đoán tên.\n' +
             '4. API cho phép CORS từ https://thongfank.github.io.\n' +
             '5. API sử dụng GET /, không phải /api/hello.';
