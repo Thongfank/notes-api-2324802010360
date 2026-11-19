@@ -236,6 +236,191 @@
         <p class="subtle">Trang GitHub Pages này là website tĩnh nên vẫn xem được khi API Codespaces đã dừng. Khi Codespace đã Stop hoặc cổng Private, tính năng gọi API trực tiếp trên Pages sẽ không hoạt động công khai.</p>
       </section>
     </main>
+
+<section class="card" id="lab2">
+  <h2>LAB 02 – Container và CloudSim Plus</h2>
+
+  <p>
+    Bài thực hành đóng gói Hello Cloud API bằng Docker,
+    triển khai nhiều container, giới hạn tài nguyên,
+    phát hành image lên GHCR và mô phỏng trung tâm
+    dữ liệu bằng CloudSim Plus.
+  </p>
+
+  <h3>1. GitHub Container Registry</h3>
+
+  <p>
+    <strong>Package:</strong>
+    <a href="https://github.com/users/Thongfank/packages/container/package/notes-api"
+       target="_blank" rel="noopener noreferrer">
+      thongfank/notes-api
+    </a>
+  </p>
+
+  <pre>docker pull ghcr.io/thongfank/notes-api:1.0</pre>
+
+  <h3>2. Dockerfile</h3>
+
+  <pre id="dockerfile">FROM node:22-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev
+COPY src ./src
+ENV PORT=3000
+EXPOSE 3000
+USER node
+CMD ["node", "src/server.js"]</pre>
+
+  <h3>3. Kết quả kiểm thử container</h3>
+
+  <p>
+    Hai container notes1 và notes2 chạy cùng
+    một Docker image. Container notes2 được
+    giới hạn 0,5 CPU và 128 MiB RAM bằng cgroups.
+  </p>
+
+  <div class="stats">
+    <div class="stat">
+      <strong>0,430 giây</strong>
+      <span>Thời gian chạy container ngắn</span>
+    </div>
+    <div class="stat">
+      <strong>128 MiB</strong>
+      <span>Giới hạn RAM notes2</span>
+    </div>
+    <div class="stat">
+      <strong>0,5 CPU</strong>
+      <span>Giới hạn CPU notes2</span>
+    </div>
+  </div>
+
+  <h3>4. So sánh máy ảo và container</h3>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Tiêu chí</th>
+          <th>Codespace</th>
+          <th>Container notes2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Thời gian khởi động</td>
+          <td>75 giây (mốc tham khảo từ Bài 1)</td>
+          <td>0,430 giây</td>
+        </tr>
+        <tr>
+          <td>Kích thước</td>
+          <td>15 GB-tháng hạn mức lưu trữ</td>
+          <td>
+            Disk Usage: 251 MB<br>
+            Content Size: 63,3 MB
+          </td>
+        </tr>
+        <tr>
+          <td>Nhân hệ điều hành</td>
+          <td>6.8.0-1070-azure</td>
+          <td>6.8.0-1070-azure (dùng chung kernel)</td>
+        </tr>
+        <tr>
+          <td>Mức cô lập</td>
+          <td>Cô lập ở lớp máy ảo</td>
+          <td>Cô lập thông qua namespace và cgroups</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>5. Kết quả mô phỏng CloudSim Plus</h3>
+
+  <p>Kết quả thực nghiệm đã tổng hợp trong buổi 2:</p>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Lần chạy</th>
+          <th>Kịch bản thử nghiệm</th>
+          <th>Finish Time cuối</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0</td>
+          <td>Cấu hình gốc</td>
+          <td>20 giây</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Nhân đôi số lượng VM</td>
+          <td>20 giây</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Nhân đôi số lượng Cloudlet</td>
+          <td>20 giây</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>CloudletSchedulerSpaceShared</td>
+          <td>40,3 giây</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Trong kết quả đã ghi nhận, tăng số VM hoặc
+    Cloudlet không làm thay đổi thời gian hoàn thành
+    cuối cùng. Khi sử dụng SpaceShared, thời gian
+    hoàn thành tăng lên 40,3 giây.
+  </p>
+
+  <h3>6. Câu hỏi phản biện</h3>
+
+  <details>
+    <summary>
+      Câu 1. Vì sao API vẫn báo RAM của máy chủ?
+    </summary>
+    <p>
+      Hàm os.totalmem() có thể báo dung lượng bộ nhớ
+      của hệ thống thay vì giới hạn cgroups của container.
+      Vì vậy, ứng dụng Node.js hoặc Java cần nhận biết
+      giới hạn tài nguyên thực tế và cấu hình bộ nhớ
+      phù hợp để tránh bị hệ điều hành kết thúc
+      khi vượt quá giới hạn RAM.
+    </p>
+  </details>
+
+  <details>
+    <summary>
+      Câu 2. TimeShared và SpaceShared khác nhau thế nào?
+    </summary>
+    <p>
+      TimeShared cho phép nhiều Cloudlet chia sẻ CPU
+      theo thời gian. SpaceShared yêu cầu đủ tài nguyên
+      trước khi Cloudlet được thực thi, do đó có thể
+      phát sinh thời gian chờ. Nhà cung cấp dịch vụ
+      có thể sử dụng TimeShared cho gói giá rẻ nhằm
+      nâng cao hiệu suất sử dụng tài nguyên.
+    </p>
+  </details>
+
+  <details>
+    <summary>
+      Câu 3. Lợi ích và hạn chế của mô phỏng là gì?
+    </summary>
+    <p>
+      Mô phỏng giúp đánh giá cấu hình tài nguyên và
+      chính sách lập lịch trước khi thuê hạ tầng thật.
+      Tuy nhiên, kết quả có thể khác thực tế do độ trễ
+      mạng, I/O, lỗi phần cứng và sự biến động tải.
+    </p>
+  </details>
+</section>
+
   </div>
 
   <footer>Thực hành Điện toán đám mây · Lab 01 · Trần Nguyễn Quốc Thông · MSSV 2324802010360</footer>
