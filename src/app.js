@@ -1,47 +1,43 @@
 const express = require('express');
 const os = require('os');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const mongoose = require('mongoose');
 const notesRouter = require('./routes/notes');
+const authRouter = require('./routes/auth');
+
+mongoose.set('sanitizeFilter', true);
 
 const app = express();
+app.set('trust proxy', 1);
+app.use(helmet());
+app.use(express.json({ limit: '100kb' }));
 
-app.use(express.json());
+app.use('/auth', rateLimit({ windowMs: 15 * 60 * 1000, limit: 20 }), authRouter);
 
-// Lab 1 - Hello Cloud
 app.get('/', (req, res) => {
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    'https://thongfank.github.io'
-  );
-
+  res.setHeader('Access-Control-Allow-Origin', 'https://thongfank.github.io');
   res.json({
     message: 'Xin chào từ đám mây!',
     host: os.hostname(),
     platform: `${os.type()} ${os.release()}`,
     cpus: os.cpus().length,
-    memoryGB: Number(
-      (os.totalmem() / 1024 ** 3).toFixed(1)
-    ),
+    memoryGB: Number((os.totalmem() / 1024 ** 3).toFixed(1)),
     uptimeSec: Math.round(os.uptime()),
     time: new Date().toISOString()
   });
 });
 
-// Lab 3 - Notes API
 app.use('/notes', notesRouter);
 
-// Middleware xử lý lỗi
 app.use((err, req, res, next) => {
   console.error(err.name || 'ServerError');
-
   const clientError =
-    ['ValidationError', 'CastError'].includes(err.name)
-    || err.code === 'LIMIT_FILE_SIZE'
-    || err.type === 'entity.parse.failed';
-
+    ['ValidationError', 'CastError'].includes(err.name) ||
+    err.code === 'LIMIT_FILE_SIZE' ||
+    err.type === 'entity.parse.failed';
   res.status(clientError ? 400 : 500).json({
-    error: clientError
-      ? err.message
-      : 'Lỗi máy chủ nội bộ'
+    error: clientError ? err.message : 'Lỗi máy chủ nội bộ'
   });
 });
 
