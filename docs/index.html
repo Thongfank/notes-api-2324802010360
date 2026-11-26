@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Báo cáo thực hành Điện toán đám mây Lab 01–03: Hello Cloud API, Docker, CloudSim Plus, MongoDB Atlas và Supabase Storage.">
-  <title>Cloud Computing Lab 01–03 | Trần Nguyễn Quốc Thông</title>
+  <meta name="description" content="Báo cáo thực hành Điện toán đám mây Lab 01–04: Hello Cloud API, Docker, CloudSim Plus, MongoDB Atlas, Supabase Storage và Bảo mật ứng dụng đám mây.">
+  <title>Cloud Computing Lab 01–04 | Trần Nguyễn Quốc Thông</title>
   <style>
     :root {
       --blue: #1d4ed8;
@@ -74,7 +74,7 @@
     details { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px 18px; border-radius: 10px; margin: 12px 0; }
     summary { font-weight: 700; cursor: pointer; }
     details p { margin: 12px 0 0; }
-    #lab2 h3, #lab3 h3 { margin-top: 24px; }
+    #lab2 h3, #lab3 h3, #lab4 h3 { margin-top: 24px; }
     #lab2 pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #17243b; color: #e2e8f0; border-radius: 10px; padding: 16px; }
     .method-chart { background: #f7faff; border: 1px solid #e0eafb; border-radius: 12px; margin: 16px 0; padding: 18px; }
     .method-chart p { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; margin: 10px 0 5px; font-weight: 650; }
@@ -107,6 +107,7 @@
         <a href="#tong-quan">Lab 01</a>
         <a href="#lab2">Lab 02</a>
         <a href="#lab3">Lab 03</a>
+        <a href="#lab4">Lab 04</a>
         <a href="#so-sanh">So sánh</a>
         <a href="#nist">NIST</a>
         <a href="#kiem-thu">Kiểm thử API</a>
@@ -116,13 +117,13 @@
   </header>
   <div class="wrap" id="dau-trang">
     <section class="hero">
-      <div class="eyebrow">Thực hành Điện toán đám mây · Lab 01–03</div>
+      <div class="eyebrow">Thực hành Điện toán đám mây · Lab 01–04</div>
       <h1>Cloud Computing — Notes API</h1>
-      <p class="lead">Từ Hello Cloud trên GitHub Codespaces, đóng gói ứng dụng bằng Docker và mô phỏng CloudSim Plus đến xây dựng REST API với MongoDB Atlas và Supabase Storage.</p>
+      <p class="lead">Từ Hello Cloud trên GitHub Codespaces, đóng gói ứng dụng bằng Docker và mô phỏng CloudSim Plus đến xây dựng REST API với MongoDB Atlas, Supabase Storage và gia cố bảo mật JWT.</p>
       <div class="meta">
         <span class="pill">Trần Nguyễn Quốc Thông</span>
         <span class="pill">MSSV: 2324802010360</span>
-        <span class="pill">05–19/11/2026</span>
+        <span class="pill">05–26/11/2026</span>
       </div>
     </section>
     <main>
@@ -239,26 +240,26 @@
         <p>Bài thực hành giúp trải nghiệm việc cấp phát môi trường phát triển trên đám mây, viết API với Express, truy cập dịch vụ qua mạng và quan sát việc đo lường tài nguyên. Sau khi kiểm thử công khai, cần chuyển cổng 3000 về Private và Stop Codespace để bảo đảm an toàn, tiết kiệm hạn mức.</p>
         <p class="subtle">Trang GitHub Pages này là website tĩnh nên vẫn xem được khi API Codespaces đã dừng. Khi Codespace đã Stop hoặc cổng Private, tính năng gọi API trực tiếp trên Pages sẽ không hoạt động công khai.</p>
       </section>
-<section class="card" id="lab2">
-  <div class="eyebrow">Lab 02 · Ảo hóa và mô phỏng</div>
-  <h2>LAB 02 – Container và CloudSim Plus</h2>
-  <p>
-    Bài thực hành đóng gói Hello Cloud API bằng Docker,
-    triển khai nhiều container, giới hạn tài nguyên,
-    phát hành image lên GHCR và mô phỏng trung tâm
-    dữ liệu bằng CloudSim Plus.
-  </p>
-  <h3>1. GitHub Container Registry</h3>
-  <p>
-    <strong>Package:</strong>
-    <a href="https://github.com/users/Thongfank/packages/container/package/notes-api"
-       target="_blank" rel="noopener noreferrer">
-      thongfank/notes-api
-    </a>
-  </p>
-  <pre>docker pull ghcr.io/thongfank/notes-api:1.0</pre>
-  <h3>2. Dockerfile</h3>
-  <pre id="dockerfile">FROM node:22-alpine
+      <section class="card" id="lab2">
+        <div class="eyebrow">Lab 02 · Ảo hóa và mô phỏng</div>
+        <h2>LAB 02 – Container và CloudSim Plus</h2>
+        <p>
+          Bài thực hành đóng gói Hello Cloud API bằng Docker,
+          triển khai nhiều container, giới hạn tài nguyên,
+          phát hành image lên GHCR và mô phỏng trung tâm
+          dữ liệu bằng CloudSim Plus.
+        </p>
+        <h3>1. GitHub Container Registry</h3>
+        <p>
+          <strong>Package:</strong>
+          <a href="https://github.com/users/Thongfank/packages/container/package/notes-api"
+             target="_blank" rel="noopener noreferrer">
+            thongfank/notes-api
+          </a>
+        </p>
+        <pre>docker pull ghcr.io/thongfank/notes-api:1.0</pre>
+        <h3>2. Dockerfile</h3>
+        <pre id="dockerfile">FROM node:22-alpine
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
@@ -267,154 +268,152 @@ ENV PORT=3000
 EXPOSE 3000
 USER node
 CMD ["node", "src/server.js"]</pre>
-  <h3>3. Kết quả kiểm thử container</h3>
-  <p>
-    Hai container notes1 và notes2 chạy cùng
-    một Docker image. Container notes2 được
-    giới hạn 0,5 CPU và 128 MiB RAM bằng cgroups.
-  </p>
-  <div class="stats">
-    <div class="stat">
-      <strong>0,430 giây</strong>
-      <span>Thời gian chạy container ngắn</span>
-    </div>
-    <div class="stat">
-      <strong>128 MiB</strong>
-      <span>Giới hạn RAM notes2</span>
-    </div>
-    <div class="stat">
-      <strong>0,5 CPU</strong>
-      <span>Giới hạn CPU notes2</span>
-    </div>
-  </div>
-  <h3>4. So sánh máy ảo và container</h3>
-  <div class="table-scroll">
-    <table>
-      <thead>
-        <tr>
-          <th>Tiêu chí</th>
-          <th>Codespace</th>
-          <th>Container notes2</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Thời gian khởi động</td>
-          <td>75 giây (mốc tham khảo từ Bài 1)</td>
-          <td>0,430 giây</td>
-        </tr>
-        <tr>
-          <td>Kích thước</td>
-          <td>15 GB-tháng hạn mức lưu trữ</td>
-          <td>
-            Disk Usage: 251 MB<br>
-            Content Size: 63,3 MB
-          </td>
-        </tr>
-        <tr>
-          <td>Nhân hệ điều hành</td>
-          <td>6.8.0-1070-azure</td>
-          <td>6.8.0-1070-azure (dùng chung kernel)</td>
-        </tr>
-        <tr>
-          <td>Mức cô lập</td>
-          <td>Cô lập ở lớp máy ảo</td>
-          <td>Cô lập thông qua namespace và cgroups</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>5. Kết quả mô phỏng CloudSim Plus</h3>
-  <p>Kết quả thực nghiệm đã tổng hợp trong buổi 2:</p>
-  <div class="table-scroll">
-    <table>
-      <thead>
-        <tr>
-          <th>Lần chạy</th>
-          <th>Kịch bản thử nghiệm</th>
-          <th>Finish Time cuối</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>0</td>
-          <td>Cấu hình gốc</td>
-          <td>20 giây</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Nhân đôi số lượng VM</td>
-          <td>20 giây</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Nhân đôi số lượng Cloudlet</td>
-          <td>20 giây</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>CloudletSchedulerSpaceShared</td>
-          <td>40,3 giây</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <p>
-    Trong kết quả đã ghi nhận, tăng số VM hoặc
-    Cloudlet không làm thay đổi thời gian hoàn thành
-    cuối cùng. Khi sử dụng SpaceShared, thời gian
-    hoàn thành tăng lên 40,3 giây.
-  </p>
-  <h3>6. Câu hỏi phản biện</h3>
-  <details>
-    <summary>
-      Câu 1. Vì sao API vẫn báo RAM của máy chủ?
-    </summary>
-    <p>
-      Hàm os.totalmem() có thể báo dung lượng bộ nhớ
-      của hệ thống thay vì giới hạn cgroups của container.
-      Vì vậy, ứng dụng Node.js hoặc Java cần nhận biết
-      giới hạn tài nguyên thực tế và cấu hình bộ nhớ
-      phù hợp để tránh bị hệ điều hành kết thúc
-      khi vượt quá giới hạn RAM.
-    </p>
-  </details>
-  <details>
-    <summary>
-      Câu 2. TimeShared và SpaceShared khác nhau thế nào?
-    </summary>
-    <p>
-      TimeShared cho phép nhiều Cloudlet chia sẻ CPU
-      theo thời gian. SpaceShared yêu cầu đủ tài nguyên
-      trước khi Cloudlet được thực thi, do đó có thể
-      phát sinh thời gian chờ. Nhà cung cấp dịch vụ
-      có thể sử dụng TimeShared cho gói giá rẻ nhằm
-      nâng cao hiệu suất sử dụng tài nguyên.
-    </p>
-  </details>
-  <details>
-    <summary>
-      Câu 3. Lợi ích và hạn chế của mô phỏng là gì?
-    </summary>
-    <p>
-      Mô phỏng giúp đánh giá cấu hình tài nguyên và
-      chính sách lập lịch trước khi thuê hạ tầng thật.
-      Tuy nhiên, kết quả có thể khác thực tế do độ trễ
-      mạng, I/O, lỗi phần cứng và sự biến động tải.
-    </p>
-  </details>
-</section>
+        <h3>3. Kết quả kiểm thử container</h3>
+        <p>
+          Hai container notes1 và notes2 chạy cùng
+          một Docker image. Container notes2 được
+          giới hạn 0,5 CPU và 128 MiB RAM bằng cgroups.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <strong>0,430 giây</strong>
+            <span>Thời gian chạy container ngắn</span>
+          </div>
+          <div class="stat">
+            <strong>128 MiB</strong>
+            <span>Giới hạn RAM notes2</span>
+          </div>
+          <div class="stat">
+            <strong>0,5 CPU</strong>
+            <span>Giới hạn CPU notes2</span>
+          </div>
+        </div>
+        <h3>4. So sánh máy ảo và container</h3>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Tiêu chí</th>
+                <th>Codespace</th>
+                <th>Container notes2</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Thời gian khởi động</td>
+                <td>75 giây (mốc tham khảo từ Bài 1)</td>
+                <td>0,430 giây</td>
+              </tr>
+              <tr>
+                <td>Kích thước</td>
+                <td>15 GB-tháng hạn mức lưu trữ</td>
+                <td>
+                  Disk Usage: 251 MB<br>
+                  Content Size: 63,3 MB
+                </td>
+              </tr>
+              <tr>
+                <td>Nhân hệ điều hành</td>
+                <td>6.8.0-1070-azure</td>
+                <td>6.8.0-1070-azure (dùng chung kernel)</td>
+              </tr>
+              <tr>
+                <td>Mức cô lập</td>
+                <td>Cô lập ở lớp máy ảo</td>
+                <td>Cô lập thông qua namespace và cgroups</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>5. Kết quả mô phỏng CloudSim Plus</h3>
+        <p>Kết quả thực nghiệm đã tổng hợp trong buổi 2:</p>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Lần chạy</th>
+                <th>Kịch bản thử nghiệm</th>
+                <th>Finish Time cuối</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0</td>
+                <td>Cấu hình gốc</td>
+                <td>20 giây</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>Nhân đôi số lượng VM</td>
+                <td>20 giây</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Nhân đôi số lượng Cloudlet</td>
+                <td>20 giây</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>CloudletSchedulerSpaceShared</td>
+                <td>40,3 giây</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Trong kết quả đã ghi nhận, tăng số VM hoặc
+          Cloudlet không làm thay đổi thời gian hoàn thành
+          cuối cùng. Khi sử dụng SpaceShared, thời gian
+          hoàn thành tăng lên 40,3 giây.
+        </p>
+        <h3>6. Câu hỏi phản biện</h3>
+        <details>
+          <summary>
+            Câu 1. Vì sao API vẫn báo RAM của máy chủ?
+          </summary>
+          <p>
+            Hàm os.totalmem() có thể báo dung lượng bộ nhớ
+            của hệ thống thay vì giới hạn cgroups của container.
+            Vì vậy, ứng dụng Node.js hoặc Java cần nhận biết
+            giới hạn tài nguyên thực tế và cấu hình bộ nhớ
+            phù hợp để tránh bị hệ điều hành kết thúc
+            khi vượt quá giới hạn RAM.
+          </p>
+        </details>
+        <details>
+          <summary>
+            Câu 2. TimeShared và SpaceShared khác nhau thế nào?
+          </summary>
+          <p>
+            TimeShared cho phép nhiều Cloudlet chia sẻ CPU
+            theo thời gian. SpaceShared yêu cầu đủ tài nguyên
+            trước khi Cloudlet được thực thi, do đó có thể
+            phát sinh thời gian chờ. Nhà cung cấp dịch vụ
+            có thể sử dụng TimeShared cho gói giá rẻ nhằm
+            nâng cao hiệu suất sử dụng tài nguyên.
+          </p>
+        </details>
+        <details>
+          <summary>
+            Câu 3. Lợi ích và hạn chế của mô phỏng là gì?
+          </summary>
+          <p>
+            Mô phỏng giúp đánh giá cấu hình tài nguyên và
+            chính sách lập lịch trước khi thuê hạ tầng thật.
+            Tuy nhiên, kết quả có thể khác thực tế do độ trễ
+            mạng, I/O, lỗi phần cứng và sự biến động tải.
+          </p>
+        </details>
+      </section>
       <section class="card" id="lab3">
         <div class="eyebrow">Lab 03 · Lưu trữ phân tán và NoSQL · 19/11/2026</div>
         <h2>LAB 03 – MongoDB Atlas và Supabase Storage</h2>
         <p>Phát triển REST API quản lý ghi chú có cơ sở dữ liệu NoSQL được quản lý, tải tệp đính kèm lên kho lưu trữ đối tượng và đánh giá chỉ mục trên tập dữ liệu 2.000 tài liệu.</p>
-
         <div class="stats">
           <div class="stat"><strong>2.000</strong><span>Tài liệu mẫu đã chèn</span></div>
           <div class="stat"><strong>3,50 lần</strong><span>Tỷ số giảm số tài liệu quét</span></div>
           <div class="stat"><strong>71,45%</strong><span>Tỷ lệ giảm khối lượng quét</span></div>
         </div>
-
         <h3>1. Môi trường và dịch vụ triển khai</h3>
         <div class="table-scroll">
           <table>
@@ -431,7 +430,6 @@ CMD ["node", "src/server.js"]</pre>
           </table>
         </div>
         <p class="note">Ứng dụng lưu nội dung và metadata ghi chú tại MongoDB Atlas; tệp đính kèm được lưu tại Supabase Storage, trường <code>attachmentUrl</code> liên kết tới tệp.</p>
-
         <h3>2. Kiểm thử REST API</h3>
         <div class="table-scroll">
           <table>
@@ -449,7 +447,6 @@ CMD ["node", "src/server.js"]</pre>
           </table>
         </div>
         <p class="subtle">Kiểm thử bằng curl trong Codespaces. Tệp đính kèm được giới hạn 2 MiB. Bucket Public chỉ sử dụng dữ liệu thử nghiệm không nhạy cảm.</p>
-
         <h3>3. Kết quả đo hiệu quả chỉ mục</h3>
         <p>Chạy <code>node scripts/seed.js</code> để chèn dữ liệu và <code>node scripts/explain.js</code> để so sánh quét toàn bộ bằng <code>$natural</code> với truy vấn dùng chỉ mục <code>tags_1</code>. Điều kiện truy vấn: <code>tags: 'docker'</code>.</p>
         <div class="table-scroll">
@@ -470,7 +467,6 @@ CMD ["node", "src/server.js"]</pre>
         <p><strong>Tỷ số:</strong> 2.000 / 571 ≈ 3,50 lần.<br><strong>Tỷ lệ giảm:</strong> (2.000 − 571) / 2.000 × 100 = 71,45%.</p>
         <p class="note"><strong>Nhận xét:</strong> Chỉ mục giúp giảm 1.429 lượt quét tài liệu nhưng vẫn trả về đúng 571 kết quả. Hai phép đo đều ghi nhận 1 ms; thí nghiệm này chứng minh giảm khối lượng quét, chưa chứng minh tăng tốc độ thực thi 3,50 lần.</p>
         <p class="subtle"><span class="source-tag">ĐÃ ĐO 19/11/2026</span> Nguồn: kết quả console.table của scripts/explain.js.</p>
-
         <h3>4. Sơ đồ so sánh MongoDB Atlas và HDFS</h3>
         <div class="diagram-grid">
           <figure class="diagram-panel">
@@ -534,7 +530,6 @@ CMD ["node", "src/server.js"]</pre>
           </table>
         </div>
         <p class="subtle">Vai trò các nút Atlas theo ảnh Metrics ngày 19/11/2026; Primary có thể thay đổi sau bầu chọn. Sơ đồ HDFS là mô hình minh họa, không phải môi trường thực nghiệm đã triển khai.</p>
-
         <h3>5. Câu hỏi phản biện</h3>
         <details open>
           <summary>Câu 1. Điều gì xảy ra khi collection có 2 triệu tài liệu?</summary>
@@ -548,7 +543,6 @@ CMD ["node", "src/server.js"]</pre>
           <summary>Câu 3. Ý nghĩa của ba bản sao trong Atlas và HDFS?</summary>
           <p>Cả hai dùng nhân bản để tăng độ bền và khả năng chịu lỗi. MongoDB Atlas nhân bản tập dữ liệu thông qua oplog từ Primary sang các Secondary và có thể bầu Primary mới. HDFS nhân bản từng khối tệp trên nhiều DataNode, do NameNode quản lý vị trí và số bản sao. Đơn vị nhân bản của hai hệ thống khác nhau.</p>
         </details>
-
         <h3>6. Bảo mật và sản phẩm nộp</h3>
         <ul class="checks">
           <li>Không commit <code>.env</code>; chỉ cấp quyền readWrite trên database notes cho notes_app.</li>
@@ -565,9 +559,107 @@ CMD ["node", "src/server.js"]</pre>
           <li><a href="https://supabase.com/docs/guides/storage/buckets/fundamentals" target="_blank" rel="noopener noreferrer">Supabase — Storage Buckets</a></li>
         </ul>
       </section>
+      <section class="card" id="lab4">
+        <div class="eyebrow">Lab 04 · Bảo mật ứng dụng đám mây · 26/11/2026</div>
+        <h2>LAB 04 – Quản lý bí mật, JWT và Quét lỗ hổng</h2>
+        <p>Gia cố bảo mật cho Notes API qua ba lớp: đưa bí mật ra khỏi mã nguồn vào Codespaces Secrets, xác thực JWT kết hợp phân quyền theo chủ sở hữu (<code>owner</code>) và quét lỗ hổng thư viện/container bằng <code>npm audit</code> và Trivy.</p>
+        <div class="stats">
+          <div class="stat"><strong>4 Secrets</strong><span>Lưu qua biến môi trường</span></div>
+          <div class="stat"><strong>JWT 1h + Rate Limit</strong><span>20 req / 15 phút cho /auth</span></div>
+          <div class="stat"><strong>0 cảnh báo</strong><span>Dependabot &amp; npm audit</span></div>
+        </div>
+
+        <h3>1. Kiểm thử xác thực, phân quyền và phòng thủ</h3>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Kịch bản kiểm thử</th><th>Cơ chế bảo vệ</th><th>HTTP Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>POST /auth/register</code> và <code>POST /auth/login</code></td><td>Băm mật khẩu với <code>bcryptjs</code>, cấp JWT ký bằng <code>JWT_SECRET</code></td><td>201 / 200 OK</td></tr>
+              <tr><td><code>GET /notes</code> không đính kèm header <code>Authorization</code></td><td>Middleware <code>requireAuth</code> chặn truy cập ẩn danh</td><td>401 Unauthorized</td></tr>
+              <tr><td><code>GET /notes</code> kèm <code>Bearer &lt;TOKEN&gt;</code> hợp lệ</td><td>Xác minh chữ ký JWT, lọc dữ liệu theo <code>owner: req.user.sub</code></td><td>200 OK</td></tr>
+              <tr><td>Người dùng B đọc ghi chú của người dùng A (<code>GET /notes/:id</code>)</td><td>Truy vấn đồng thời <code>_id</code> và <code>owner</code>, tránh lộ sự tồn tại tài nguyên</td><td>404 Not Found</td></tr>
+              <tr><td>Gửi payload NoSQL injection <code>{"email":{"$gt":""}}</code></td><td>Kiểm tra kiểu chuỗi <code>readCredentials</code> + <code>mongoose.set('sanitizeFilter', true)</code></td><td>401 Unauthorized</td></tr>
+              <tr><td>Gửi 25 yêu cầu <code>POST /auth/login</code> sai liên tiếp</td><td><code>express-rate-limit</code> chặn từ lần thứ 21 trong cửa sổ 15 phút</td><td>429 Too Many Requests</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>2. So sánh kết quả quét lỗ hổng container (Trivy)</h3>
+        <p>Quét hai biến thể Docker image được build từ cùng mã nguồn ứng dụng bằng <code>aquasec/trivy:latest</code> ở mức độ nghiêm trọng <code>HIGH,CRITICAL</code>.</p>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Image</th><th>Kích thước</th><th>HIGH</th><th>CRITICAL</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>node:22-alpine</code> (<code>notes-api:alpine</code>)</td>
+                <td>Disk Usage: 289 MB<br>Content Size: 71,4 MB</td>
+                <td>10<br><span class="subtle">(0 OS + 10 gói Node.js)</span></td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td><code>node:22</code> (<code>notes-api:full</code>)</td>
+                <td>Disk Usage: 1,67 GB<br>Content Size: 419 MB</td>
+                <td>479<br><span class="subtle">(469 OS + 10 gói Node.js)</span></td>
+                <td>20<br><span class="subtle">(20 OS + 0 gói Node.js)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note"><strong>Nhận xét:</strong> Base image <code>node:22-alpine</code> có kích thước nhỏ hơn gần 6 lần và không ghi nhận lỗ hổng <code>HIGH/CRITICAL</code> nào ở tầng hệ điều hành (10 lỗ hổng <code>HIGH</code> còn lại nằm ở các gói phụ thuộc gián tiếp trong <code>package-lock.json</code>), trong khi bản <code>node:22</code> đầy đủ phát sinh thêm 489 lỗ hổng từ các gói hệ thống Debian.</p>
+        <p class="subtle">Kiểm tra trực tiếp bằng <code>npm audit --omit=dev</code> ghi nhận <strong>0 vulnerabilities</strong>; tab Security → Dependabot trên repository ghi nhận <strong>0 open alerts</strong>.</p>
+
+        <h3>3. Đánh giá rủi ro cấu hình Network Access 0.0.0.0/0 trên Atlas</h3>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Khía cạnh đánh giá</th><th>Phân tích chi tiết</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Rủi ro cụ thể của <code>0.0.0.0/0</code></strong></td>
+                <td>Cổng mạng của cụm MongoDB Atlas mở cho toàn bộ địa chỉ IP trên Internet. Bất kỳ máy chủ nào cũng có thể gửi gói tin tới cluster, làm tăng bề mặt tấn công (dò quét cổng, vét cạn mật khẩu hoặc truy cập trái phép ngay lập tức nếu chuỗi <code>MONGODB_URI</code> bị rò rỉ).</td>
+              </tr>
+              <tr>
+                <td><strong>Các biện pháp bù trừ đang áp dụng</strong></td>
+                <td>(1) Người dùng <code>notes_app</code> chỉ có quyền tối thiểu <code>readWrite</code> duy nhất trên cơ sở dữ liệu <code>notes</code>; (2) Mật khẩu ngẫu nhiên độ phức tạp cao; (3) Kết nối mã hóa TLS bắt buộc của MongoDB Atlas; (4) Tách biệt hoàn toàn chuỗi kết nối vào Codespaces Secrets, không lưu trong Git và bật Push protection.</td>
+              </tr>
+              <tr>
+                <td><strong>Phương án tốt hơn khi có ngân sách</strong></td>
+                <td>Triển khai ứng dụng trên hạ tầng có địa chỉ IP đầu ra cố định (Static Outbound IP / NAT Gateway) để giới hạn IP Whitelist trên Atlas, hoặc nâng cấp gói Atlas hỗ trợ <strong>AWS PrivateLink / VPC Peering</strong> nhằm đóng hẳn truy cập từ Internet công cộng.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>4. Câu hỏi phản biện</h3>
+        <details open>
+          <summary>Câu 1. JWT có thời hạn 1 giờ và không lưu trên máy chủ. Nếu token bị lộ, hệ thống làm gì được trong 1 giờ đó? Đề xuất khắc phục và chi phí.</summary>
+          <p>Do JWT mang tính phi trạng thái (stateless), máy chủ chỉ xác thực chữ ký mật mã mà không tra cứu phiên nên <strong>không thể thu hồi chủ động</strong> token đã phát hành trước khi hết hạn 60 phút; kẻ tấn công có thể mạo danh người dùng trong suốt thời gian này. Để khắc phục, có thể lưu danh sách đen (denylist) chứa <code>jti</code> của các token bị thu hồi trên Redis với TTL bằng thời gian sống còn lại của token, hoặc rút ngắn thời hạn Access Token xuống 5–15 phút kết hợp Refresh Token lưu trong cơ sở dữ liệu. <strong>Chi phí đánh đổi:</strong> mất tính stateless thuần túy, phát sinh chi phí vận hành dịch vụ lưu trữ trạng thái (Redis/DB), tăng độ trễ kiểm tra mỗi yêu cầu và tăng độ phức tạp xử lý làm mới token phía client.</p>
+        </details>
+        <details open>
+          <summary>Câu 2. Vì sao image Alpine thường có ít lỗ hổng hơn? Ít lỗ hổng được báo cáo có đồng nghĩa với an toàn hơn không?</summary>
+          <p>Image <code>node:22-alpine</code> sử dụng <code>musl libc</code> và <code>BusyBox</code>, loại bỏ hàng trăm thư viện hệ thống và tiện ích dòng lệnh có sẵn trong bản Debian đầy đủ (<code>node:22</code>), qua đó thu hẹp diện tích bề mặt tấn công (attack surface) và giảm số gói phần mềm có thể chứa CVE. Tuy nhiên, ít lỗ hổng được báo cáo <strong>không đồng nghĩa tuyệt đối với an toàn hơn</strong>: các công cụ quét chỉ phát hiện các lỗ hổng đã biết trong cơ sở dữ liệu CVE của gói cài đặt, không phát hiện được lỗ hổng logic trong mã nguồn ứng dụng, cấu hình sai quyền thực thi container (như chạy bằng <code>root</code>), lỗ hổng zero-day chưa công bố hay lỗi đặc thù của thư viện <code>musl</code>.</p>
+        </details>
+        <details open>
+          <summary>Câu 3. Theo mô hình trách nhiệm chia sẻ, phần nào thuộc MongoDB/Supabase và phần nào thuộc nhóm phát triển?</summary>
+          <p><strong>Trách nhiệm của nhà cung cấp (MongoDB Atlas &amp; Supabase):</strong> bảo mật hạ tầng vật lý tại trung tâm dữ liệu (vùng Singapore), phần cứng, hệ điều hành nền tảng, bản vá nhân cơ sở dữ liệu, cơ chế nhân bản dữ liệu, tính sẵn sàng (SLA), mã hóa dữ liệu lưu trữ (encryption at rest) và giao thức truyền tải TLS.<br><strong>Trách nhiệm của nhóm phát triển:</strong> bảo mật tầng ứng dụng và cấu hình dịch vụ, bao gồm kiểm soát truy cập mạng (Network Access), phân quyền tài khoản DB theo nguyên tắc tối thiểu, quản lý an toàn các khóa bí mật (<code>MONGODB_URI</code>, <code>SUPABASE_SERVICE_KEY</code>, <code>JWT_SECRET</code>), cài đặt xác thực JWT, kiểm soát truy cập theo chủ sở hữu (<code>owner</code>), chống NoSQL injection, giới hạn tốc độ (rate limiting), kiểm soát kích thước tệp tải lên và cập nhật bản vá cho thư viện/container image.</p>
+        </details>
+
+        <h3>5. Sản phẩm nộp</h3>
+        <ul class="checks">
+          <li>Lịch sử Git sạch bí mật; đã bật Secret Protection / Push protection và Dependabot alerts.</li>
+          <li>Kiểm thử xác thực 401/200, cách ly dữ liệu chéo giữa các người dùng (404) và rate limit 429 ở lần đăng nhập thứ 21.</li>
+          <li>Bảng đối chiếu kết quả quét lỗ hổng Trivy giữa <code>node:22-alpine</code> và <code>node:22</code> cùng bảng phân tích rủi ro Network Access.</li>
+          <li>Mã nguồn và trang báo cáo được cập nhật tại commit <code>Bai 4</code>.</li>
+        </ul>
+      </section>
     </main>
   </div>
-  <footer>Thực hành Điện toán đám mây · Lab 01–03 · Trần Nguyễn Quốc Thông · MSSV 2324802010360</footer>
+  <footer>Thực hành Điện toán đám mây · Lab 01–04 · Trần Nguyễn Quốc Thông · MSSV 2324802010360</footer>
   <script>
     (() => {
       'use strict';
